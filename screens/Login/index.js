@@ -27,7 +27,7 @@ const Login = (props) => {
         await AsyncStorage.setItem('token', token);
         Alert.alert('Success', 'Logged In Successfully');
         // Redirect or navigate to a logged-in page
-        props.navigation.navigate('Dashboard');
+        props.navigation.navigate('GoalForm');
       }
     } catch (error) {
       console.error('Error logging in:', error);

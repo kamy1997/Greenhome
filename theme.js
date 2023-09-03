@@ -8,51 +8,72 @@ const colors = {
 };
 
 const sizes = {
-  base: 14,
-  font: 14,
-  welcome: 18,
-  name: 21,
-  h1: 140,
-  button: 16,
+  base: '14px', // Ajout de "px"
+  font: '14px', // Ajout de "px"
+  welcome: '18px', // Ajout de "px"
+  name: '21px', // Ajout de "px"
+  h1: '140px', // Ajout de "px"
+  button: '16px', // Ajout de "px"
 };
 
 const fonts = {
   welcome: {
     fontSize: sizes.welcome,
     color: colors.gray,
-    letterSpacing: -0.6,
-    lineHeight: sizes.welcome + 4,
+    letterSpacing: '-0.6px', // Ajout de "px"
+    lineHeight: parseInt(sizes.welcome) + 4 + 'px', // Conversion en nombre et ajout de "px"
   },
   name: {
     fontSize: sizes.name,
     fontWeight: '600',
     color: colors.black,
-    letterSpacing: -1.1,
-    lineHeight: sizes.name + 4,
+    letterSpacing: '-1.1px', // Ajout de "px"
+    lineHeight: parseInt(sizes.name) + 4 + 'px', // Conversion en nombre et ajout de "px"
   },
   caption: {
-    fontSize: sizes.welcome,
+    fontSize: sizes.welcome, // Utilisation de la taille de police "welcome"
     color: colors.gray,
-    letterSpacing: -0.6,
-    lineHeight: sizes.welcome + 4,
+    letterSpacing: '-0.6px', // Ajout de "px"
+    lineHeight: parseInt(sizes.welcome) + 4 + 'px', // Conversion en nombre et ajout de "px"
   },
   h1: {
     fontSize: sizes.h1,
     color: colors.black,
-    letterSpacing: -10,
-    lineHeight: sizes.h1,
+    letterSpacing: '-10px', // Ajout de "px"
+    lineHeight: sizes.h1, // La valeur est déjà en pixels
   },
   button: {
     fontSize: sizes.button,
     color: colors.black,
     fontWeight: '600',
-    letterSpacing: -0.4,
-    lineHeight: sizes.button + 4,
+    letterSpacing: '-0.4px', // Ajout de "px"
+    lineHeight: parseInt(sizes.button) + 4 + 'px', // Conversion en nombre et ajout de "px"
   },
 };
 
-export {
-  colors,
-  sizes,
-  fonts,
-};
+const globalStyles = `
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Roboto", "Oxygen",
+      "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: ${colors.white};
+    background: rgb(23, 32, 46);
+  }
+
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+      monospace;
+  }
+`;
+
+export { colors, sizes, fonts, globalStyles };
