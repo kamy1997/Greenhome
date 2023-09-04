@@ -7,8 +7,7 @@ import MainHeader from '../../components/MainHeader';
 import ScreenHeader from '../../components/ScreenHeader';
 import TopPlacesCarousel from '../../components/TopPlacesCarousel';
 import SectionHeader from '../../components/SectionHeader';
-import TripsList from '../../components/TripsList';
-import { TOP_PLACES} from '../../data';
+
 
 const GoalForm = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -42,10 +41,10 @@ const GoalForm = () => {
       if (token) {
         const response = await axios.get('https://greenhomeapi.onrender.com/api/goals/', {
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZWU2NTE3NjFiMDBhMmM4MDQxYjZkYyIsImlhdCI6MTY5Mzc2NDAyMiwiZXhwIjoxNjk2MzU2MDIyfQ.ULYl8W53tVQRv0Uo3XbP04RYXT00yPBWouANoyWsmt0`,
+            Authorization: `Bearer ${token}`,
           },
         });
-        console.log('Response from backend:', token); // Ajoutez cette ligne pour voir la réponse du backend dans la console
+        console.log(response.data)
         if (response.status === 200) {
           setGoals(response.data);
           setIsLoading(false);
@@ -64,20 +63,14 @@ const GoalForm = () => {
 
   return (
     <View style={styles.container}>
-      {isAuthenticated ? (
-        <Text>Bonjour, {userName}!</Text>
-      ) : (
-        <Text>Connectez-vous pour afficher votre nom d'utilisateur.</Text>
-      )}
       <MainHeader title="Green Home" />
       <ScreenHeader mainTitle="Control Your" secondTitle="Home" />
       <ScrollView showsVerticalScrollIndicator={false}>
-      <TopPlacesCarousel list={TOP_PLACES} />
         <SectionHeader title="Rooms" buttonTitle="See All" onPress={() => {}} />
         {isLoading ? (
           <ActivityIndicator size="large" color={colors.primary} />
         ) : (
-          <TripsList list={goals} />
+          <TopPlacesCarousel list={goals} />
         )}
       </ScrollView>
     </View>

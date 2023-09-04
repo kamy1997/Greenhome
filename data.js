@@ -1,7 +1,7 @@
 export const TOP_PLACES = [
     {
       id: 1,
-     image: require('./assets/chambre.png'),
+      image: require('./assets/chambre.png'),
       title: 'Room',
       location: 'Italy',
       description:

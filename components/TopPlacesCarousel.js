@@ -9,11 +9,28 @@ import {
 } from 'react-native';
 import {colors, shadow, sizes, spacing} from './themes';
 import FavoriteButton from './FavoriteButton';
-
 const CARD_WIDTH = sizes.width - 80;
 const CARD_HEIGHT = 200;
 const CARD_WIDTH_SPACING = CARD_WIDTH + spacing.l;
-
+import Cuisine from "../assets/Cuisine.png";
+import Chambre from "../assets/Bedroom.png";
+import Salon from "../assets/salon.png";
+import WC from "../assets/WC.png";
+function ImageChambre(type) {
+  switch (type) {
+    case 'cuisine':
+      return Cuisine;
+    case 'chambre':
+      return Chambre;
+    case 'salon':
+      return Salon;
+    case 'WC':
+      return WC;
+      // Ajoutez d'autres cas pour les types de but supplémentaires
+    default:
+      return null; // Retournez null si le type de but n'a pas d'icône correspondante
+  }
+}
 const TopPlacesCarousel = ({list}) => {
   return (
     <FlatList
@@ -31,13 +48,11 @@ const TopPlacesCarousel = ({list}) => {
               marginRight: index === list.length - 1 ? spacing.l : 0,
             }}>
             <View style={[styles.card, shadow.dark]}>
-              <FavoriteButton style={styles.favorite} />
               <View style={styles.imageBox}>
-                <Image source={item.image} style={styles.image} />
+                <Image style={styles.image} source={ImageChambre(item.type)} />
               </View>
               <View style={styles.titleBox}>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.location}>{item.location}</Text>
+                <Text style={styles.title}>{item.name.toUpperCase()}</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -64,6 +79,8 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     borderRadius: sizes.radius,
     overflow: 'hidden',
+    ...StyleSheet.absoluteFillObject, // Pour occuper toute la vue parente
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Couleur noire avec une opacité de 0.5 (50%)
   },
   image: {
     width: CARD_WIDTH,
@@ -72,8 +89,8 @@ const styles = StyleSheet.create({
   },
   titleBox: {
     position: 'absolute',
-    top: CARD_HEIGHT - 80,
-    left: 16,
+    top: CARD_HEIGHT - 40,
+    right: 16,
   },
   title: {
     fontSize: sizes.h2,

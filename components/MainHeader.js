@@ -7,7 +7,7 @@ import {sizes, spacing} from './themes';
 const MainHeader = ({title}) => {
   const insets = useSafeAreaInsets();
   return (
-    <View style={[styles.container, {marginTop: insets.top}]}>
+    <View style={[styles.container, {marginTop: 5}]}>
       <Icon icon="Hamburger" onPress={() => {}} />
       <Text style={styles.title}>{title}</Text>
       <Icon icon="Notification" onPress={() => {}} />
