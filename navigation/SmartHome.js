@@ -12,7 +12,7 @@ import Profil from '../screens/Profil';
 import GoalForm from '../screens/GoalForm';
 
 export default createStackNavigator({
-  Login,
+  Login,  
   GoalForm,
   Dashboard,  
   Settings,

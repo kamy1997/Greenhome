@@ -10,7 +10,7 @@ const Home = (props) => {
       <View style={{ marginHorizontal: 40, marginVertical: 100 }}>
       <Text style={{ color: 'white', fontSize: 64 }}>Green</Text>
       <Text style={{ color: 'white', fontSize: 64, marginBottom: 40 }}>Home</Text>
-      <Btn bgColor={green} textColor='white' btnLabel="Login" Press={() => props.navigation.navigate("Profil")} />
+      <Btn bgColor={green} textColor='white' btnLabel="Login" Press={() => props.navigation.navigate("Login")} />
       <Btn bgColor='white' textColor={darkGreen} btnLabel="Signup" Press={() => props.navigation.navigate("Signup")} />
       </View>
     </Background>

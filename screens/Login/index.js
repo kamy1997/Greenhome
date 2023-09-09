@@ -6,7 +6,8 @@ import Background from '../../components/Background';
 import Btn from '../../components/Btn';
 import { darkGreen } from '../../components/Constants';
 import Field from '../../components/Field';
-
+import { TextField } from '../../components/TextField';
+import Inputs from '../../components/Inputs';
 const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,12 +28,15 @@ const Login = (props) => {
         await AsyncStorage.setItem('token', token);
         Alert.alert('Success', 'Logged In Successfully');
         // Redirect or navigate to a logged-in page
-        props.navigation.navigate('Dashboard');
+        props.navigation.navigate('GoalForm');
       }
     } catch (error) {
       console.error('Error logging in:', error);
       Alert.alert('Error', 'Invalid credentials. Please try again.');
     }
+  };
+  const handleError = (error, input) => {
+    setErrors(prevState => ({...prevState, [input]: error}));
   };
 
   return (
@@ -77,6 +81,26 @@ const Login = (props) => {
           >
             Login to your account
           </Text>
+          <TextField
+          secureTextEntry
+          accessibilityHint="{strings.login.passwordHint}"
+          accessibilityLabel="{strings.login.password}"
+          autoCapitalize="none"
+          onChangeText={setPassword}
+          placeholder= "password"
+          textContentType="password"
+          value={password}
+        />
+        
+        {/* <Inputs></Inputs> */}
+        <Inputs
+            // onChangeText={text => handleOnchange(text, 'email')}
+            // onFocus={() => handleError(null, 'email')}
+            iconName="email-outline"
+            label="Email"
+            placeholder="Enter your email address"
+            // error={errors.email}
+          />
           <Field
             placeholder="Email / Username"
             keyboardType="email-address"
