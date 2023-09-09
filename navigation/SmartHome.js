@@ -10,6 +10,7 @@ import LightControl from '../screens/LightControl';
 import Wifi from '../screens/Wifi';
 import Profil from '../screens/Profil';
 import GoalForm from '../screens/GoalForm';
+import Object from '../screens/Object';
 export default createStackNavigator({
   
   Login,
@@ -17,9 +18,10 @@ export default createStackNavigator({
   Settings,
   LightControl
   ,Home,
-   GoalForm
+   GoalForm ,
+    
 
-  ,Wifi,Signup,Profil
+  Wifi,Signup,Profil
 }, {
     initialRouteName: 'Home'
   });

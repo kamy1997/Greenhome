@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, Image} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from './Icon';
 import {sizes, spacing} from './themes';
@@ -9,8 +9,11 @@ const MainHeader = ({title}) => {
   return (
     <View style={[styles.container, {marginTop: 5}]}>
       <Icon icon="Hamburger" onPress={() => {}} />
+      
       <Text style={styles.title}>{title}</Text>
       <Icon icon="Notification" onPress={() => {}} />
+     
+      
     </View>
   );
 };
@@ -25,6 +28,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: sizes.h3,
     fontWeight: 'bold',
+  },
+  logo: {
+    flex: 1,
+    resizeMode: 'contain', // Ajustez la hauteur du logo selon vos besoins
   },
 });
 

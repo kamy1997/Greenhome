@@ -12,7 +12,7 @@ import FavoriteButton from './FavoriteButton';
 const CARD_WIDTH = sizes.width - 80;
 const CARD_HEIGHT = 200;
 const CARD_WIDTH_SPACING = CARD_WIDTH + spacing.l;
-import Cuisine from "../assets/Cuisine.png";
+import Cuisine from "../assets/cuisine.png";
 import Chambre from "../assets/Bedroom.png";
 import Salon from "../assets/salon.png";
 import WC from "../assets/WC.png";

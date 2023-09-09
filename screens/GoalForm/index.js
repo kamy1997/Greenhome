@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, View, Text, StyleSheet, ScrollView } from 'react-native';
+import { ActivityIndicator, View, Text, StyleSheet, ScrollView ,TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { colors } from '../../components/themes';
@@ -34,7 +34,14 @@ const GoalForm = () => {
       console.error('Erreur lors de la récupération des données utilisateur :', error);
     }
   };
-
+  const logout = async () => {
+    try {
+      await AsyncStorage.removeItem('token'); // Supprimez le token d'authentification
+      setIsAuthenticated(false); // Réinitialisez l'état d'authentification
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion :', error);
+    }
+  };
   const fetchGoalsFromBackend = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -63,7 +70,13 @@ const GoalForm = () => {
 
   return (
     <View style={styles.container}>
+     
       <MainHeader title="Green Home" />
+      {isAuthenticated && (
+    <TouchableOpacity onPress={logout}>
+      <Text style={styles.logoutButton}>Déconnexion</Text>
+    </TouchableOpacity>
+  )}
       <ScreenHeader mainTitle="Control Your" secondTitle="Home" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <SectionHeader title="Rooms" buttonTitle="See All" onPress={() => {}} />
@@ -72,6 +85,7 @@ const GoalForm = () => {
         ) : (
           <TopPlacesCarousel list={goals} />
         )}
+        
       </ScrollView>
     </View>
   );
@@ -81,6 +95,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.light,
+  },
+  logoutButton: {
+    color: 'red', // Couleur du texte du bouton de déconnexion
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginRight: 15, // Espacement du bouton par rapport au titre
   },
 });
 
