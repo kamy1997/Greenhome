@@ -16,6 +16,7 @@ import Cuisine from "../assets/Cuisine.png";
 import Chambre from "../assets/Bedroom.png";
 import Salon from "../assets/salon.png";
 import WC from "../assets/WC.png";
+
 function ImageChambre(type) {
   switch (type) {
     case 'cuisine':
@@ -31,34 +32,41 @@ function ImageChambre(type) {
       return null; // Retournez null si le type de but n'a pas d'icône correspondante
   }
 }
-const TopPlacesCarousel = ({list}) => {
+const ChambreItem = (props) => {
+  const { navigation, list } = props; // Obtenez navigation à partir de props
+
   return (
-    <FlatList
-      data={list}
-      horizontal
-      snapToInterval={CARD_WIDTH_SPACING}
-      decelerationRate="fast"
-      showsHorizontalScrollIndicator={false}
-      keyExtractor={i => i.id}
-      renderItem={({item, index}) => {
-        return (
-          <TouchableOpacity
-            style={{
-              marginLeft: spacing.l,
-              marginRight: index === list.length - 1 ? spacing.l : 0,
-            }}>
-            <View style={[styles.card, shadow.dark]}>
-              <View style={styles.imageBox}>
-                <Image style={styles.image} source={ImageChambre(item.type)} />
-              </View>
-              <View style={styles.titleBox}>
-                <Text style={styles.title}>{item.name.toUpperCase()}</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        );
-      }}
-    />
+      <FlatList
+          data={list}
+          horizontal
+          snapToInterval={CARD_WIDTH_SPACING}
+          decelerationRate="fast"
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={item => item._id} // Convertir l'ID en chaîne de caractères
+          renderItem={({ item, index }) => {
+
+            return (
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('Objets', { chambreId: item._id })}
+                    key={item._id} // Convertir l'ID en chaîne de caractères
+                    style={{
+                      marginLeft: spacing.l,
+                      marginRight: index === list.length - 1 ? spacing.l : 0,
+                    }}
+                >
+                  <View style={[styles.card, shadow.dark]}>
+                    <View style={styles.imageBox}>
+                      <Image style={styles.image} source={ImageChambre(item.type)} />
+                    </View>
+                    <View style={styles.titleBox}>
+                      <Text style={styles.title}>{item.name.toUpperCase()}</Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+            );
+          }}
+      />
+
   );
 };
 
@@ -103,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TopPlacesCarousel;
+export default ChambreItem;

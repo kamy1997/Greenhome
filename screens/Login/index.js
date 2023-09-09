@@ -6,13 +6,15 @@ import Background from '../../components/Background';
 import Btn from '../../components/Btn';
 import { darkGreen } from '../../components/Constants';
 import Field from '../../components/Field';
+import { useNavigation } from '@react-navigation/native';
 
-const Login = (props) => {
+const Login = ({onLogin}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+  const navigation = useNavigation();
 
-  const handleLogin = async () => {
+
+    const handleLogin = async () => {
     try {
       const response = await axios.post(
         'https://greenhomeapi.onrender.com/api/users/login',
@@ -26,8 +28,8 @@ const Login = (props) => {
         const token = response.data.token;
         await AsyncStorage.setItem('token', token);
         Alert.alert('Success', 'Logged In Successfully');
-        // Redirect or navigate to a logged-in page
-        props.navigation.navigate('GoalForm');
+        onLogin(); // Ajoutez cette ligne pour appeler la fonction onLogin
+        navigation.navigate('Chambres');
       }
     } catch (error) {
       console.error('Error logging in:', error);

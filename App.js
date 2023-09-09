@@ -1,7 +1,13 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import { createAppContainer } from 'react-navigation';
+import Routes from './navigation/Routes';
 
-import SmartHome from './navigation/SmartHome';
+const App = () => {
+    return (
+        <Routes />
+    );
+};
 
-export default createAppContainer(SmartHome);
+export default App;
