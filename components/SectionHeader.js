@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   title: {
-    fontSize: sizes.h3,
+    fontSize: sizes.h2,
     fontWeight: 'bold',
   },
 });

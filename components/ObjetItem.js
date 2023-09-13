@@ -33,7 +33,7 @@ function ImageChambre(type) {
   }
 }
 const ObjetItem = (props) => {
-  const { navigation, list } = props; // Obtenez navigation à partir de props
+  const { navigation, list } = props; // Obtenez config à partir de props
 
   return (
       <FlatList
