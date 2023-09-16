@@ -3,15 +3,16 @@ import {Text, View, StyleSheet, Image} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from './Icon';
 import {sizes, spacing} from './themes';
-
+import { useNavigation } from '@react-navigation/native';
 const MainHeader = ({title}) => {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation(); // Obtenez l'objet de navigation
   return (
     <View style={[styles.container, {marginTop: 5}]}>
       <Icon icon="Hamburger" onPress={() => {}} />
       
       <Text style={styles.title}>{title}</Text>
-      <Icon icon="Notification" onPress={() => {}} />
+      <Icon icon="Notification" onPress={() => navigation.navigate("EditProfile")}  />
      
       
     </View>

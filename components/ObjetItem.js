@@ -16,13 +16,14 @@ import Cuisine from "../assets/cuisine.png";
 import Chambre from "../assets/Bedroom.png";
 import Salon from "../assets/salon.png";
 import WC from "../assets/WC.png";
+
 function ImageChambre(type) {
   switch (type) {
-    case 'cuisine':
+    case 'lampe':
       return Cuisine;
     case 'chambre':
       return Chambre;
-    case 'salon':
+    case 'capteur':
       return Salon;
     case 'WC':
       return WC;
@@ -31,40 +32,45 @@ function ImageChambre(type) {
       return null; // Retournez null si le type de but n'a pas d'icône correspondante
   }
 }
-const TopPlacesCarousel = ({list}) => {
+const ObjetItem = (props) => {
+  const { navigation, list } = props; // Obtenez navigation à partir de props
+
   return (
-    <FlatList
-      data={list}
-      horizontal
-      snapToInterval={CARD_WIDTH_SPACING}
-      decelerationRate="fast"
-      showsHorizontalScrollIndicator={false}
-      keyExtractor={i => i.id}
-      renderItem={({item, index}) => {
-        return (
-          <TouchableOpacity
-            style={{
-              marginLeft: spacing.l,
-              marginRight: index === list.length - 1 ? spacing.l : 0,
-            }}>
-            <View style={[styles.card, shadow.dark]}>
-              <View style={styles.imageBox}>
-                <Image style={styles.image} source={ImageChambre(item.type)} />
-              </View>
-              <View style={styles.titleBox}>
-                <Text style={styles.title}>{item.name.toUpperCase()}</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        );
-      }}
-    />
+      <FlatList
+          data={list}
+          horizontal
+          snapToInterval={CARD_WIDTH_SPACING}
+          decelerationRate="fast"
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={item => item._id} // Convertir l'ID en chaîne de caractères
+          renderItem={({ item, index }) => {
+
+            return (
+                <TouchableOpacity
+                    key={item._id} // Convertir l'ID en chaîne de caractères
+                    style={{
+                      marginLeft: spacing.l,
+                      marginRight: index === list.length - 1 ? spacing.l : 0,
+                    }}
+                >
+                  <View style={[styles.card, shadow.dark]}>
+                    <View style={styles.imageBox}>
+                      <Image style={styles.image} source={ImageChambre(item.type)} />
+                    </View>
+                    <View style={styles.titleBox}>
+                      <Text style={styles.title}>{item.name.toUpperCase()}</Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+            );
+          }}
+      />
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    width: CARD_WIDTH,
+    width: CARD_WIDTH * 0.5,
     height: CARD_HEIGHT,
     marginVertical: 10,
   },
@@ -75,7 +81,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   imageBox: {
-    width: CARD_WIDTH,
+    width: CARD_WIDTH * 0.5,
     height: CARD_HEIGHT,
     borderRadius: sizes.radius,
     overflow: 'hidden',
@@ -83,14 +89,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Couleur noire avec une opacité de 0.5 (50%)
   },
   image: {
-    width: CARD_WIDTH,
+    width: CARD_WIDTH * 0.5,
     height: CARD_HEIGHT,
     resizeMode: 'cover',
   },
   titleBox: {
     position: 'absolute',
     top: CARD_HEIGHT - 40,
-    right: 16,
+    alignSelf:"center"
   },
   title: {
     fontSize: sizes.h2,
@@ -103,4 +109,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TopPlacesCarousel;
+export default ObjetItem;

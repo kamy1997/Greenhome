@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Object = ({ route }) => {
+const bject = ({ route }) => {
   const { goalId } = route.params;
   const [objects, setObjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -72,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Object;
+export default object;

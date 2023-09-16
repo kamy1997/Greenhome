@@ -1,51 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, View, Text, StyleSheet, ScrollView ,TouchableOpacity} from 'react-native';
+import { ActivityIndicator, View, Text,  TouchableOpacity,  StyleSheet, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { colors } from '../../components/themes';
 import MainHeader from '../../components/MainHeader';
 import ScreenHeader from '../../components/ScreenHeader';
-import TopPlacesCarousel from '../../components/TopPlacesCarousel';
+import ChambreItem from '../../components/ChambreItem';
 import SectionHeader from '../../components/SectionHeader';
+import { useNavigation } from '@react-navigation/native';
+import EditProfile from '../Profil';
 
 
-const GoalForm = () => {
+const Chambres = ({onLogout}) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
   const [goals, setGoals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigation = useNavigation(); // Obtenez l'objet de navigation
 
-  const fetchUserData = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      console.log(token); // Ajoutez cette ligne pour voir le token dans la console
-      if (token) {
-        const response = await axios.get('https://greenhomeapi.onrender.com/api/users/me', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.status === 200) {
-          setIsAuthenticated(true);
-          setUserName(response.data.name);
-        }
-      }
-    } catch (error) {
-      console.error('Erreur lors de la récupération des données utilisateur :', error);
-    }
-  };
-  const logout = async () => {
-    try {
-      await AsyncStorage.removeItem('token'); // Supprimez le token d'authentification
-      setIsAuthenticated(false); // Réinitialisez l'état d'authentification
-    } catch (error) {
-      console.error('Erreur lors de la déconnexion :', error);
-    }
-  };
-  const fetchGoalsFromBackend = async () => {
+  const fetchChambres = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
       if (token) {
+        console.log(token);
         const response = await axios.get('https://greenhomeapi.onrender.com/api/goals/', {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -62,10 +39,14 @@ const GoalForm = () => {
       setIsLoading(false);
     }
   };
+  const handleLogout = () => {
+    onLogout();
+    AsyncStorage.removeItem('token');
+    console.log(AsyncStorage.getItem('token'));
+  };
   
   useEffect(() => {
-    fetchUserData();
-    fetchGoalsFromBackend();
+    fetchChambres();
   }, []);
 
   return (
@@ -76,6 +57,8 @@ const GoalForm = () => {
     <TouchableOpacity onPress={logout}>
       <Text style={styles.logoutButton}>Déconnexion</Text>
     </TouchableOpacity>
+    
+    
   )}
       <ScreenHeader mainTitle="Control Your" secondTitle="Home" />
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -83,9 +66,11 @@ const GoalForm = () => {
         {isLoading ? (
           <ActivityIndicator size="large" color={colors.primary} />
         ) : (
-          <TopPlacesCarousel list={goals} />
-        )}
-        
+          <ChambreItem navigation={navigation} list={goals} />
+          )}
+        <TouchableOpacity style={styles.button} onPress={handleLogout}>
+          <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -96,12 +81,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.light,
   },
-  logoutButton: {
-    color: 'red', // Couleur du texte du bouton de déconnexion
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginRight: 15, // Espacement du bouton par rapport au titre
+  button: {
+    backgroundColor: 'red', // Customize the button style as needed
+    padding: 10,
+    borderRadius: 5,
+    width: "50%",
+    alignSelf:"center",
+    justifyContent: 'flex-end'
+  },
+  buttonText: {
+    color: 'white', // Customize the text color
+    textAlign: 'center',
   },
 });
 
-export default GoalForm;
+export default Chambres;
