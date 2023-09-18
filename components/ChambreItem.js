@@ -33,7 +33,7 @@ function ImageChambre(type) {
   }
 }
 const ChambreItem = (props) => {
-  const { navigation, list } = props; // Obtenez navigation à partir de props
+  const { navigation, list } = props; // Obtenez config à partir de props
 
   return (
       <FlatList
@@ -47,7 +47,7 @@ const ChambreItem = (props) => {
 
             return (
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Objets', { chambreId: item._id })}
+                    onPress={() => navigation.navigate('Objets', { chambreData: item })}
                     key={item._id} // Convertir l'ID en chaîne de caractères
                     style={{
                       marginLeft: spacing.l,

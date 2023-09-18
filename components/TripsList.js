@@ -7,15 +7,15 @@ import FavoriteButton from './FavoriteButton';
 const CARD_WIDTH = sizes.width / 2 - (spacing.l + spacing.l / 2);
 const CARD_HEIGHT = 220;
 
-const TripsList = ({ list }) => {
-  console.log(list);
-  if (!Array.isArray(list) || list.length === 0) {
+const TripsList = ({ liste }) => {
+  console.log(liste);
+  if (!Array.isArray(liste) || liste.length === 0) {
     return <Text>Aucune chambre disponible.</Text>;
   }
 
   return (
     <View style={styles.container}>
-      {list.map((item, index) => (
+      {liste.map((item, index) => (
         <TouchableOpacity
           style={styles.cardContainer}
           key={item.id}

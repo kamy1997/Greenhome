@@ -3,26 +3,20 @@ import { ActivityIndicator, View, Text, StyleSheet, ScrollView } from 'react-nat
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { colors } from '../../components/themes';
-import MainHeader from '../../components/MainHeader';
 import SectionHeader from '../../components/SectionHeader';
-import ChambreItem from "../../components/ChambreItem";
 import { useRoute } from '@react-navigation/native';
 import ObjetItem from "../../components/ObjetItem";
 
-
-const Objets = (props) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userName, setUserName] = useState('');
+const Objets = () => {
   const [objects, setObjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-    const route = useRoute();
-    const { chambreId } = route.params;
-  console.log(chambreId)
+  const route = useRoute();
+  const { chambreData } = route.params;
+  const chambreName = chambreData["name"];
+  const chambreId = chambreData["_id"];
   const fetchObjects = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-      console.log(token);
       if (token) {
         const response = await axios.get(`https://greenhomeapi.onrender.com/api/goals/${chambreId}/objects/`, {
           headers: {
@@ -32,7 +26,6 @@ const Objets = (props) => {
         if (response.status === 200) {
           setObjects(response.data);
           setIsLoading(false);
-          console.log(response)
         }
       }
     } catch (error) {
@@ -43,13 +36,12 @@ const Objets = (props) => {
   
   useEffect(() => {
     fetchObjects();
-  }, []);
+  }, [route.params.chambreData]); // Assurez-vous d'ajouter `route.params.chambreData` comme dépendance
 
   return (
     <View style={styles.container}>
-      <MainHeader title="Green Home" />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <SectionHeader title="Objets connécté" buttonTitle="See All" onPress={() => {}} />
+        <SectionHeader title={chambreName.toUpperCase()} buttonTitle="See All" onPress={() => {}} />
         {isLoading ? (
           <ActivityIndicator size="large" color={colors.primary} />
         ) : (

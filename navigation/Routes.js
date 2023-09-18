@@ -8,7 +8,7 @@ import Home from '../screens/Home';
 import Objets from '../screens/Objets';
 import Login from '../screens/Login';
 import Signup from '../screens/Signup';
-import EditProfile from '../screens/Profil';
+import EditProfile from '../screens/EditProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,9 +46,8 @@ const Routes = () => {
                     name="Objets"
                     component={Objets}
                 />
-                 <Stack.Screen
-                 
-                  name="EditProfile" component={EditProfile} />
+                 <Stack.Screen name="EditProfile" component={EditProfile} />
+
                 {/* Ajoutez cette ligne */}
               </Stack.Navigator>
           ) : (

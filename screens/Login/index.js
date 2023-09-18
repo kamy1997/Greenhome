@@ -7,7 +7,6 @@ import Btn from '../../components/Btn';
 import { darkGreen } from '../../components/Constants';
 import Field from '../../components/Field';
 import { useNavigation } from '@react-navigation/native';
-
 const Login = ({onLogin}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -92,7 +91,7 @@ const Login = ({onLogin}) => {
           <View
             style={{
               alignItems: 'flex-end',
-              width: '78%',
+              width: '65%',
               paddingRight: 16,
               marginBottom: 200,
             }}
@@ -129,7 +128,7 @@ const Login = ({onLogin}) => {
               Don't have an account?{' '}
             </Text>
             <TouchableOpacity
-              onPress={() => props.navigation.navigate('Signup')}
+              onPress={() => navigation.navigate('Signup')}
             >
               <Text
                 style={{

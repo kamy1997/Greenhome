@@ -9,7 +9,7 @@ export default function Btn({bgColor, btnLabel, textColor, Press}) {
         backgroundColor: bgColor,
         borderRadius: 100,
         alignItems: 'center',
-        width: 350,
+        width: "65%" /* 65% of the parent */,
         paddingVertical: 5,
         marginVertical: 10
       }}>

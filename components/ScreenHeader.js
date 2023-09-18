@@ -16,11 +16,21 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.l,
   },
   mainTitle: {
-    fontSize: sizes.title,
+    fontSize: '30px',
     fontWeight: 'bold',
+    fontfamily: 'Montserrat',
+    fontstyle: 'normal',
+    lineHeight: '32px',
+    color: '#1C1B1A',
   },
   secondTitle: {
-    fontSize: sizes.title,
+    color: '#6D6966',
+    fontSize: '9px',
+    fontWeight: '500',
+    fontfamily: 'Montserrat',
+    fontstyle: 'normal',
+    lineHeight: '32px',
+
   },
 });
 

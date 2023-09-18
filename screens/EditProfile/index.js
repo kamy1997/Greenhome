@@ -50,7 +50,7 @@ const EditProfile = ({ navigation }) => {
         if (response.status === 200) {
           const userData = response.data;
           setName(userData.name);
-          setprimaryEmail(userData.primary_email);
+         
           setEmail(userData.email);
           setPassword(userData.password);
         }
@@ -81,7 +81,7 @@ const EditProfile = ({ navigation }) => {
           name,
           email,
           password,
-          primary_email,
+         
           // N'envoyez pas le mot de passe depuis le client, sauf si vous avez une logique sécurisée pour le faire
           // password,
         };
@@ -230,32 +230,7 @@ const EditProfile = ({ navigation }) => {
               />
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: "column",
-              marginBottom: 6,
-            }}
-          >
-            <Text style={{ ...FONTS.h4 }}>primaryEmail</Text>
-            <View
-              style={{
-                height: 44,
-                width: "100%",
-                borderColor: COLORS.secondaryGray,
-                borderWidth: 1,
-                borderRadius: 4,
-                marginVertical: 6,
-                justifyContent: "center",
-                paddingLeft: 8,
-              }}
-            >
-              <TextInput
-                value={email}
-                onChangeText={(value) => setprimaryEmail(value)}
-                editable={true}
-              />
-            </View>
-          </View>
+         
           <View
             style={{
               flexDirection: "column",
