@@ -3,10 +3,8 @@ import axios from 'axios';
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import Background from '../../components/Background';
 import Btn from '../../components/Btn';
-import {darkGreen} from '../../components/Constants';
 import Field from '../../components/Field';
 import {useNavigation} from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Signup = () => {
     const [name, setName] = useState('');
@@ -28,16 +26,16 @@ const Signup = () => {
             );
 
             if (response.status === 200) {
-                const token = response.data.token;
-                await AsyncStorage.setItem('token', token);
-                Alert.alert('Success', 'Account created');
-                alert('Account created');
-                navigation.navigate('Chambres');
+                    Alert.alert('Success', 'Account created');
+                    alert('Account created');
+                    navigation.navigate('Login');
             }
-        } catch (error) {
-            console.error('Error creating account:', error);
-        }
+        }  catch (error) {
+        console.log('Error logging in:', error);
+        Alert.alert('Error', 'Email address exist.');
+    }
     };
+
 
     return (
         <Background>
@@ -90,7 +88,7 @@ const Signup = () => {
                     />
                     <Btn
                         textColor="white"
-                        bgColor={darkGreen}
+                        bgColor='#A1E2B0FF'
                         btnLabel="Signup"
                         Press={handleSignup}
                     />
@@ -109,7 +107,7 @@ const Signup = () => {
                         >
                             <Text
                                 style={{
-                                    color: darkGreen,
+                                    color: '#A1E2B0FF',
                                     fontWeight: 'bold',
                                     fontSize: 16,
                                 }}

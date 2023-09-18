@@ -4,8 +4,7 @@ import {View, ImageBackground} from 'react-native';
 const Background = ({ children }) => {
   return (
     <View>
-      <ImageBackground source={require("../assets/leaves.jpg")} style={{ height: '100%' }} />
-      <View style={{ position: "absolute" }}>
+      <View style={{ height: '100%',alignItems: "center", backgroundColor: '#A1E2B0FF' }}>
         {children}
       </View>
     </View>

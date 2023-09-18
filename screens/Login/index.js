@@ -31,8 +31,8 @@ const Login = ({onLogin}) => {
         navigation.navigate('Chambres');
       }
     } catch (error) {
-      console.error('Error logging in:', error);
-      Alert.alert('Error', 'Invalid credentials. Please try again.');
+      console.log('Error logging in:', error);
+      Alert.alert('Error', 'Please check the email address and password and try again.');
     }
   };
 
@@ -52,17 +52,18 @@ const Login = ({onLogin}) => {
         <View
           style={{
             backgroundColor: 'white',
-            height: 700,
+            height: 800,
             width: 460,
             borderTopLeftRadius: 130,
-            paddingTop: 100,
+            paddingTop: 50,
             alignItems: 'center',
+
           }}
         >
           <Text
             style={{
               fontSize: 40,
-              color: darkGreen,
+              color: '#A1E2B0FF',
               fontWeight: 'bold',
             }}
           >
@@ -108,7 +109,7 @@ const Login = ({onLogin}) => {
           </View>
           <Btn
             textColor="white"
-            bgColor={darkGreen}
+            bgColor='#A1E2B0FF'
             btnLabel="Login"
             Press={handleLogin}
           />
@@ -132,7 +133,7 @@ const Login = ({onLogin}) => {
             >
               <Text
                 style={{
-                  color: darkGreen,
+                  color: '#A1E2B0FF',
                   fontWeight: 'bold',
                   fontSize: 16,
                 }}

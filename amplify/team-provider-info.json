@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-greenhome-staging-52911-authRole",
+      "UnauthRoleArn": "arn:aws:iam::726174062898:role/amplify-greenhome-staging-52911-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::726174062898:role/amplify-greenhome-staging-52911-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-greenhome-staging-52911-deployment",
+      "UnauthRoleName": "amplify-greenhome-staging-52911-unauthRole",
+      "StackName": "amplify-greenhome-staging-52911",
+      "StackId": "arn:aws:cloudformation:us-east-1:726174062898:stack/amplify-greenhome-staging-52911/223ff980-551b-11ee-8700-0eacaf3887bd",
+      "AmplifyAppId": "d2jyo0f1kkhcrc"
+    },
+    "categories": {
+      "auth": {
+        "GreenHome": {}
+      }
+    }
+  }
+}

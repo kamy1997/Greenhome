@@ -6,6 +6,7 @@ import { colors } from '../../components/themes';
 import SectionHeader from '../../components/SectionHeader';
 import { useRoute } from '@react-navigation/native';
 import ObjetItem from "../../components/ObjetItem";
+import {configureAmplify, publishToIoT, subscribeToIoT} from "../../config/AwsIot";
 
 const Objets = () => {
   const [objects, setObjects] = useState([]);
@@ -14,6 +15,10 @@ const Objets = () => {
   const { chambreData } = route.params;
   const chambreName = chambreData["name"];
   const chambreId = chambreData["_id"];
+  const [isConnected, setIsConnected] = useState(false);
+
+
+
   const fetchObjects = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -33,10 +38,10 @@ const Objets = () => {
       setIsLoading(false);
     }
   };
-  
+
   useEffect(() => {
     fetchObjects();
-  }, [route.params.chambreData]); // Assurez-vous d'ajouter `route.params.chambreData` comme dépendance
+  }, [route.params.chambreData]);
 
   return (
     <View style={styles.container}>

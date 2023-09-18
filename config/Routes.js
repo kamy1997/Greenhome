@@ -10,6 +10,7 @@ import Login from '../screens/Login';
 import Signup from '../screens/Signup';
 import MainHeader from "../components/MainHeader";
 import MenuLeft from "../components/MenuLeft";
+import Dashboard from "../screens/Dashboard";
 
 const Stack = createNativeStackNavigator();
 
@@ -86,6 +87,8 @@ const Routes = ({ onIsLoggedInChange }) => {
                                     </React.Fragment>
                                 )}
                             </Stack.Screen>
+                            <Stack.Screen name="Dashboard" component={Dashboard} />
+
                         </>
                     )}
                 </Stack.Navigator>
@@ -95,7 +98,8 @@ const Routes = ({ onIsLoggedInChange }) => {
 
 const GlobalSafeArea = styled.SafeAreaView`
   flex: 1;
-  background-color: #a1e2b0;
+  background-color: #A1E2B0FF;
+  width: ;
 `;
 
 
