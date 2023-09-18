@@ -87,8 +87,6 @@ const Routes = ({ onIsLoggedInChange }) => {
                                     </React.Fragment>
                                 )}
                             </Stack.Screen>
-                            <Stack.Screen name="Dashboard" component={Dashboard} />
-
                         </>
                     )}
                 </Stack.Navigator>
