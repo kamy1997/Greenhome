@@ -24,11 +24,11 @@ const Login = ({onLogin}) => {
       );
 
       if (response.status === 200) {
-        const token = response.data.token;
-        await AsyncStorage.setItem('token', token);
-        Alert.alert('Success', 'Logged In Successfully');
-        onLogin(); // Ajoutez cette ligne pour appeler la fonction onLogin
-        navigation.navigate('Chambres');
+          const user = response.data;
+          await AsyncStorage.setItem('user', JSON.stringify(user));
+          Alert.alert('Success', 'Logged In Successfully');
+          onLogin(); // Ajoutez cette ligne pour appeler la fonction onLogin
+          navigation.navigate('Chambres');
       }
     } catch (error) {
       console.log('Error logging in:', error);

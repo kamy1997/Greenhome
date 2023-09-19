@@ -8,7 +8,6 @@ const CARD_WIDTH = sizes.width / 2 - (spacing.l + spacing.l / 2);
 const CARD_HEIGHT = 220;
 
 const TripsList = ({ liste }) => {
-  console.log(liste);
   if (!Array.isArray(liste) || liste.length === 0) {
     return <Text>Aucune chambre disponible.</Text>;
   }

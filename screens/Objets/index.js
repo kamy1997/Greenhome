@@ -6,7 +6,6 @@ import { colors } from '../../components/themes';
 import SectionHeader from '../../components/SectionHeader';
 import { useRoute } from '@react-navigation/native';
 import ObjetItem from "../../components/ObjetItem";
-import {configureAmplify, publishToIoT, subscribeToIoT} from "../../config/AwsIot";
 
 const Objets = () => {
   const [objects, setObjects] = useState([]);
@@ -15,15 +14,21 @@ const Objets = () => {
   const { chambreData } = route.params;
   const chambreName = chambreData["name"];
   const chambreId = chambreData["_id"];
-  const [isConnected, setIsConnected] = useState(false);
+  const [newState, setNewState] = useState(false); // État pour déclencher le rechargement des objets
+
+  const handleValueChange = (newState) => {
+    console.log(newState);
+    setNewState(newState); // Mettre à jour l'état newState pour déclencher le rechargement des objets
+  };
 
 
 
   const fetchObjects = async () => {
     try {
-      const token = await AsyncStorage.getItem('token');
+      const user = JSON.parse(await AsyncStorage.getItem('user'));
+      const token = user.token;
       if (token) {
-        const response = await axios.get(`https://greenhomeapi.onrender.com/api/goals/${chambreId}/objects/`, {
+        const response = await axios.get(`https://greenhomeapi.onrender.com/api/objects/${chambreId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -41,7 +46,7 @@ const Objets = () => {
 
   useEffect(() => {
     fetchObjects();
-  }, [route.params.chambreData]);
+  }, [route.params.chambreData,newState]);
 
   return (
     <View style={styles.container}>
@@ -50,7 +55,7 @@ const Objets = () => {
         {isLoading ? (
           <ActivityIndicator size="large" color={colors.primary} />
         ) : (
-            <ObjetItem list={objects} />
+            <ObjetItem list={objects} onValueChange={handleValueChange} />
         )}
       </ScrollView>
     </View>

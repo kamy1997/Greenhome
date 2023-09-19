@@ -24,8 +24,7 @@ const Signup = () => {
                     password,
                 }
             );
-
-            if (response.status === 200) {
+            if (response.status === 201) {
                     Alert.alert('Success', 'Account created');
                     alert('Account created');
                     navigation.navigate('Login');

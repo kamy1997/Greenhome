@@ -10,7 +10,10 @@ import Login from '../screens/Login';
 import Signup from '../screens/Signup';
 import MainHeader from "../components/MainHeader";
 import MenuLeft from "../components/MenuLeft";
-import Dashboard from "../screens/Dashboard";
+import Permissions from "../screens/Permissions";
+import ManagePermissions from "../screens/ManagePermissions";
+import Profile from "../screens/Profil";
+import Settings from  "../screens/Settings";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,8 +33,8 @@ const Routes = ({ onIsLoggedInChange }) => {
 
         // Déclaration de token
         const getTokenAndCheck = async () => {
-            const token = await AsyncStorage.getItem('token');
-
+            const user = JSON.parse(await AsyncStorage.getItem('user'));
+            const token = user.token;
             if (token) {
                 AsyncStorage.getItem('token')
                     .then(token => {
@@ -87,6 +90,39 @@ const Routes = ({ onIsLoggedInChange }) => {
                                     </React.Fragment>
                                 )}
                             </Stack.Screen>
+
+                            <Stack.Screen name="Profil">
+                                {props => (
+                                    <React.Fragment>
+                                        {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
+                                        <Profile {...props} />
+                                    </React.Fragment>
+                                )}
+                            </Stack.Screen>
+                            <Stack.Screen name="ManagePermissions">
+                                {props => (
+                                    <React.Fragment>
+                                        {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
+                                        <ManagePermissions {...props} />
+                                    </React.Fragment>
+                                )}
+                            </Stack.Screen>
+                            <Stack.Screen name="Permissions">
+                                {props => (
+                                    <React.Fragment>
+                                        {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
+                                        <Permissions {...props} />
+                                    </React.Fragment>
+                                )}
+                            </Stack.Screen>
+                            <Stack.Screen name="Settings">
+                                {props => (
+                                    <React.Fragment>
+                                        {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
+                                        <Settings {...props} />
+                                    </React.Fragment>
+                                )}
+                            </Stack.Screen>
                         </>
                     )}
                 </Stack.Navigator>
@@ -97,8 +133,6 @@ const Routes = ({ onIsLoggedInChange }) => {
 const GlobalSafeArea = styled.SafeAreaView`
   flex: 1;
   background-color: #A1E2B0FF;
-  width: ;
 `;
-
 
 export default Routes;

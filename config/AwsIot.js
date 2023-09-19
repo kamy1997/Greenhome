@@ -15,18 +15,15 @@ export default function App() {
     const [Sensor, setSensor] = useState('');
 
     function onMessage(message) {
-        console.log(message);
         if (message.destinationName === "mqtt-async-test/valuee") {
             setValue(parseInt(message.payloadString))
         }
         if (message.destinationName === "mqtt-async-test/NN"){
-            console.log(message)
             setSensor(message.payloadString)
         }
     }
 
     useEffect(() => {
-        console.log(client);
         const connectOptions = {
             userName: "GreenHome", // Your username
             password: "GreenHome2023", // Your password

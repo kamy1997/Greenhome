@@ -18,7 +18,8 @@ class Dashboard extends Component {
   };
 
   async componentDidMount() {
-    const token = await AsyncStorage.getItem('token');
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+    const token = user.token;
     if (token) {
       try {
         const response = await axios.get('https://greenhomeapi.onrender.com/api/users/me', {
@@ -37,20 +38,7 @@ class Dashboard extends Component {
       }
     }
   }
-  handleLogout = async () => {
-    try {
-      await AsyncStorage.removeItem('token');
-      this.setState({
-        isAuthenticated: false,
-        userName: '',
-      });
-      // Redirect or navigate to the login screen
-      this.props.navigation.navigate('Login');
-      Alert.alert('Logged Out', 'You have been successfully logged out.');
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  };
+
   render() {
     const { navigation, settings } = this.props;
     const { isAuthenticated, userName } = this.state;
@@ -184,11 +172,6 @@ class Dashboard extends Component {
             </Block>
           </Block>
         </ScrollView>
-        {isAuthenticated && (
-          <TouchableOpacity onPress={this.handleLogout} style={styles.logoutButton}>
-            <Text style={styles.logoutText}>Logout</Text>
-          </TouchableOpacity>
-        )}
       </Block>
     )
   }

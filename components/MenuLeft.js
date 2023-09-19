@@ -27,14 +27,14 @@ const MainHeader = ({onLogout}) => {
     }
     const fetchChambres = async () => {
         try {
-            const token = await AsyncStorage.getItem('token');
+            const user = JSON.parse(await AsyncStorage.getItem('user'));
+            const token = user.token;
             if (token) {
                 const response = await axios.get('https://greenhomeapi.onrender.com/api/goals/', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                console.log(response.data)
                 if (response.status === 200) {
                     setChambres(response.data);
                 }
@@ -50,7 +50,7 @@ const MainHeader = ({onLogout}) => {
 
     const handleLogout = async () => {
         onLogout();
-        await AsyncStorage.removeItem('token');
+        await AsyncStorage.removeItem('user');
     };
 
   return (
@@ -75,7 +75,13 @@ const MainHeader = ({onLogout}) => {
                 </TouchableOpacity>
             ))}
         </View>
-        <TouchableOpacity style={styles.button} onPress={handleLogout}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Permissions')}>
+            <View style={styles.buttonContent}>
+                <Icon name="sign-out-alt" size={20} color="white"  />
+                <Text style={styles.buttonText}>Permissions</Text>
+            </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button2} onPress={handleLogout}>
             <View style={styles.buttonContent}>
                 <Icon name="sign-out-alt" size={20} color="white"  />
                 <Text style={styles.buttonText}>Déconnexion</Text>
@@ -121,6 +127,17 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         position: 'absolute', // Position absolue pour le menu
         bottom: 10,
+        alignItems: 'center',// Alignement horizontal
+    },
+    button2: {
+        backgroundColor: 'black', // Customize the button style as needed
+        padding: 10,
+        borderRadius: 5,
+        width: "90%",
+        alignSelf: "center",
+        justifyContent: 'flex-end',
+        position: 'absolute', // Position absolue pour le menu
+        bottom: 80,
         alignItems: 'center',// Alignement horizontal
     },
     chambresContent: {
