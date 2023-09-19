@@ -63,7 +63,43 @@ const MainHeader = ({onLogout}) => {
             <Text style={styles.title}>Home</Text>
         </View>
         </TouchableOpacity>
+        
         <View style={styles.separator}></View>
+        <TouchableOpacity style={styles.chambreContent} onPress={() => navigation.navigate('EditProfile')}>
+            <View style={styles.iconContainer}>
+                <Icon name="user" size={25} color="black" solid style={styles.icon} />
+               
+            </View>
+            <Text style={styles.title}>Profil</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.chambreContent} onPress={() => navigation.navigate('FAQPage')}>
+            <View style={styles.iconContainer}>
+                <Icon name="cog" size={25} color="black" style={styles.icon} />
+               
+            </View>
+            <Text style={styles.title}>FAQ</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.chambreContent} onPress={() => navigation.navigate('ConseilsDurable')}>
+            <View style={styles.iconContainer}>
+                <Icon name="question-circle" size={25} color="black" solid style={styles.icon} />
+               
+            </View>
+            <Text style={styles.title}>ConseilsDurable</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.chambreContent} onPress={() => navigation.navigate('CarbonCalculator')}>
+            <View style={styles.iconContainer}>
+                <Icon name="fa-solid fa-leaf" size={25} color="black" solid style={styles.icon} />
+               
+            </View>
+            <Text style={styles.title}>CarbonCalculator</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.chambreContent} onPress={() => navigation.navigate('Settings')}>
+            <View style={styles.iconContainer}>
+                <Icon name="fa-solid fa-leaf" size={25} color="black" solid style={styles.icon} />
+               
+            </View>
+            <Text style={styles.title}>Settings</Text>
+        </TouchableOpacity>
         <Text>Rooms</Text>
         <View style={styles.chambresContent}>
             {chambres.map((item, index) => (

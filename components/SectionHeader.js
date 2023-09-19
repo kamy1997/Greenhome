@@ -18,12 +18,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: spacing.l,
     marginRight: spacing.m,
-    marginTop: spacing.l,
+    marginTop: spacing.l -35,
     marginBottom: 10,
   },
   title: {
-    fontSize: sizes.h2,
-    fontWeight: 'bold',
+    fontSize: sizes.h3,
+    fontWeight: '700',
+    fontFamily: 'Montserrat',
   },
 });
 

@@ -11,8 +11,29 @@ import { useNavigation } from '@react-navigation/native';
 
 const Chambres = () => {
   const [chambres, setChambres] = useState([]);
+  const [username, setUsername] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const navigation = useNavigation(); // Obtenez l'objet de config
+
+  const navigation = useNavigation(); 
+  
+  const fetchUser = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        const response = await axios.get('https://greenhomeapi.onrender.com/api/users/me', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response.data);
+        if (response.status === 200) {
+          setUsername(response.data.name);
+        }
+      }
+    } catch (error) {
+      console.error('Erreur lors de la récupération des informations de l\'utilisateur depuis le back-end :', error);
+    }
+  };// Obtenez l'objet de config
 
   const fetchChambres = async () => {
     try {
@@ -37,11 +58,13 @@ const Chambres = () => {
   
   useEffect(() => {
     fetchChambres();
+    fetchUser();
   }, []);
+  const helloEmoji = "👋";
 
   return (
     <View style={styles.container}>
-      <ScreenHeader mainTitle="Control Your" secondTitle="Home" />
+     <ScreenHeader mainTitle={`Hello ${username} ${helloEmoji}`} secondTitle="Anything I can help you with ?" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <SectionHeader title="Rooms" buttonTitle="See All" onPress={() => {}} />
         {isLoading ? (

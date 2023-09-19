@@ -7,6 +7,7 @@ import {useNavigation} from "@react-navigation/native";
 
 const MainHeader = ({onMenuOpenChange }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigation = useNavigation(); // Obtenez la config actuelle
   const toggleMenu = () => {
     const newIsMenuOpen = !isMenuOpen;
     setIsMenuOpen(newIsMenuOpen);
@@ -21,7 +22,7 @@ const MainHeader = ({onMenuOpenChange }) => {
       <TouchableOpacity onPress={toggleMenu}>
         <Icon icon="Hamburger"  />
       </TouchableOpacity>
-      <Text style={styles.title}>GreenHome</Text>
+      <Icon icon="Logo" style={styles.logo} onPress={() => {navigation.navigate('Chambres')}} />
       <Icon icon="Notification" onPress={() => {}} />
     </View>
   );
@@ -37,7 +38,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: sizes.h2,
-    fontWeight: 'bold',
+    fontWeight: '700',
+  },
+  logo: {
+    width: 150, // Ajustez la largeur du logo selon vos besoins
+    height: 50,  // Ajustez la hauteur du logo selon vos besoins
+    resizeMode: 'contain',
+    marginTop: -20,
+  
   },
 });
 

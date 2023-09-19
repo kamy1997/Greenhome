@@ -13,14 +13,25 @@ const ScreenHeader = ({mainTitle, secondTitle}) => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: spacing.l,
-    paddingVertical: spacing.l,
+    paddingVertical: spacing.l* 2
+
   },
   mainTitle: {
-    fontSize: sizes.title,
-    fontWeight: 'bold',
+    fontSize: '30px',
+    fontWeight: '800',
+    fontfamily: 'Montserrat',
+    fontstyle: 'normal',
+    lineHeight: '32px',
+    color: '#1C1B1A',
   },
   secondTitle: {
-    fontSize: sizes.title,
+    color: '#6D6966',
+    fontSize: '14px',
+    fontWeight: '200',
+    fontfamily: 'Montserrat',
+    fontstyle: 'normal',
+   
+
   },
 });
 

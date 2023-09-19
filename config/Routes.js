@@ -11,6 +11,11 @@ import Signup from '../screens/Signup';
 import MainHeader from "../components/MainHeader";
 import MenuLeft from "../components/MenuLeft";
 import Dashboard from "../screens/Dashboard";
+import EditProfile from "../screens/EditProfile";
+import FAQPage from "../screens/FAQPage";
+import ConseilsDurable from "../screens/ConseilsDurable";
+import CarbonCalculator from "../screens/CarbonCalculator"
+import Settings from '../screens/Settings';
 
 const Stack = createNativeStackNavigator();
 
@@ -88,6 +93,47 @@ const Routes = ({ onIsLoggedInChange }) => {
                                 )}
                             </Stack.Screen>
                             <Stack.Screen name="Dashboard" component={Dashboard} />
+                            <Stack.Screen name="EditProfile">
+                                {props => (
+                                    <React.Fragment>
+                                        {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
+                                        <EditProfile {...props} />
+                                    </React.Fragment>
+                                )}
+                            </Stack.Screen>
+                            <Stack.Screen name="FAQPage" >
+                            {props => (
+                                <React.Fragment>
+                                    {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
+                                    <FAQPage {...props} />
+                                </React.Fragment>
+                            )} 
+                            </Stack.Screen>
+                            <Stack.Screen name="ConseilsDurable" >
+                            {props => (
+                                <React.Fragment>
+                                    {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
+                                    <ConseilsDurable {...props} />
+                                </React.Fragment>
+                            )} 
+                            </Stack.Screen>
+                            <Stack.Screen name="CarbonCalculator" >
+                            {props => (
+                                <React.Fragment>
+                                    {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
+                                    <CarbonCalculator {...props} />
+                                </React.Fragment>
+                            )} 
+                            </Stack.Screen>
+                            <Stack.Screen name="Settings" >
+                            {props => (
+                                <React.Fragment>
+                                    {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
+                                    <Settings {...props} />
+                                </React.Fragment>
+                            )} 
+                            </Stack.Screen>
+
 
                         </>
                     )}
