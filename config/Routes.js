@@ -14,14 +14,17 @@ import Permissions from "../screens/Permissions";
 import ManagePermissions from "../screens/ManagePermissions";
 import Profile from "../screens/Profil";
 import Settings from  "../screens/Settings";
+import ConseilsDurable from "../screens/ConseilsDurable";
+import CarbonCalculator from "../screens/CarbonCalculator";
+import FAQPage from "../screens/FAQPage";
 
 const Stack = createNativeStackNavigator();
 
-const Routes = ({ onIsLoggedInChange }) => {
+const Routes = ({ client ,onIsLoggedInChange }) => {
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
     const [isMenuOpen, setIsMenuOpen] = React.useState(true);
     const navigation = useNavigation(); // Obtenez la config actuelle
-
+    console.log(client);
     const handleMenuOpenChange = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -58,7 +61,8 @@ const Routes = ({ onIsLoggedInChange }) => {
     return (
         <GlobalSafeArea>
                 {isLoggedIn && <MainHeader title="Green Home" onMenuOpenChange={handleMenuOpenChange} />}
-                <Stack.Navigator
+                {isLoggedIn && isMenuOpen && <MenuLeft />}
+            <Stack.Navigator
                     screenOptions={{
                         headerShown: false, // Masque le header par défaut
                     }}>
@@ -74,27 +78,21 @@ const Routes = ({ onIsLoggedInChange }) => {
                         </>
                     ) : (
                         <>
-                            <Stack.Screen name="Chambres">
-                                {props => (
-                                    <React.Fragment>
-                                        {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
-                                        <Chambres {...props}  />
-                                    </React.Fragment>
-                                )}
-                            </Stack.Screen>
-                            <Stack.Screen name="Objets">
-                                {props => (
-                                    <React.Fragment>
-                                        {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
-                                        <Objets {...props} />
-                                    </React.Fragment>
-                                )}
-                            </Stack.Screen>
+                            <Stack.Screen
+                                name="Chambres"
+                                component={(props) => <Chambres client={client} {...props} />}
+                                options={{ title: 'Chambres' }}
+                            />
+
+                            <Stack.Screen
+                                name="Objets"
+                                component={(props) => <Objets client={client} {...props} />}
+                                options={{ title: 'Objets' }}
+                            />
 
                             <Stack.Screen name="Profil">
                                 {props => (
                                     <React.Fragment>
-                                        {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
                                         <Profile {...props} />
                                     </React.Fragment>
                                 )}
@@ -102,7 +100,6 @@ const Routes = ({ onIsLoggedInChange }) => {
                             <Stack.Screen name="ManagePermissions">
                                 {props => (
                                     <React.Fragment>
-                                        {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
                                         <ManagePermissions {...props} />
                                     </React.Fragment>
                                 )}
@@ -110,16 +107,35 @@ const Routes = ({ onIsLoggedInChange }) => {
                             <Stack.Screen name="Permissions">
                                 {props => (
                                     <React.Fragment>
-                                        {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
                                         <Permissions {...props} />
+                                    </React.Fragment>
+                                )}
+                            </Stack.Screen>
+                            <Stack.Screen name="FAQPage" >
+                                {props => (
+                                    <React.Fragment>
+                                        <FAQPage {...props} />
+                                    </React.Fragment>
+                                )}
+                            </Stack.Screen>
+                            <Stack.Screen name="ConseilsDurable" >
+                                {props => (
+                                    <React.Fragment>
+                                        <ConseilsDurable {...props} />
+                                    </React.Fragment>
+                                )}
+                            </Stack.Screen>
+                            <Stack.Screen name="CarbonCalculator" >
+                                {props => (
+                                    <React.Fragment>
+                                        <CarbonCalculator {...props} />
                                     </React.Fragment>
                                 )}
                             </Stack.Screen>
                             <Stack.Screen name="Settings">
                                 {props => (
                                     <React.Fragment>
-                                        {isMenuOpen && <MenuLeft onLogout={() => setIsLoggedIn(false)} />}
-                                        <Settings {...props} />
+                                        <Settings {...props} onLogout={() => setIsLoggedIn(false)} />
                                     </React.Fragment>
                                 )}
                             </Stack.Screen>

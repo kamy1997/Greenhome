@@ -6,8 +6,9 @@ import { colors } from '../../components/themes';
 import SectionHeader from '../../components/SectionHeader';
 import { useRoute } from '@react-navigation/native';
 import ObjetItem from "../../components/ObjetItem";
+import BottomTab from "../../components/BottomTab";
 
-const Objets = () => {
+const Objets = ({client}) => {
   const [objects, setObjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const route = useRoute();
@@ -20,8 +21,6 @@ const Objets = () => {
     console.log(newState);
     setNewState(newState); // Mettre à jour l'état newState pour déclencher le rechargement des objets
   };
-
-
 
   const fetchObjects = async () => {
     try {
@@ -55,9 +54,10 @@ const Objets = () => {
         {isLoading ? (
           <ActivityIndicator size="large" color={colors.primary} />
         ) : (
-            <ObjetItem list={objects} onValueChange={handleValueChange} />
+            <ObjetItem list={objects} client={client} onValueChange={handleValueChange} />
         )}
       </ScrollView>
+      <BottomTab/>
     </View>
   );
 };

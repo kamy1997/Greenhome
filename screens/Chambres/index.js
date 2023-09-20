@@ -1,19 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import {ActivityIndicator, View, Text, TouchableOpacity, StyleSheet, ScrollView, Button} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {ActivityIndicator, View, Text, TouchableOpacity, StyleSheet, ScrollView, Button, Switch} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { colors } from '../../components/themes';
+import {colors, shadow, sizes, spacing} from '../../components/themes';
 import ScreenHeader from '../../components/ScreenHeader';
 import ChambreItem from '../../components/ChambreItem';
 import SectionHeader from '../../components/SectionHeader';
 import { useNavigation } from '@react-navigation/native';
 import BottomTab from "../../components/BottomTab";
 import * as Notifications from "expo-notifications";
+import Paho from "paho-mqtt";
+import Icon from "react-native-vector-icons/FontAwesome";
+
+const CARD_WIDTH = sizes.width - 80;
+const CARD_HEIGHT = 200;
+const CARD_WIDTH_SPACING = CARD_WIDTH + spacing.l;
 
 const Chambres = () => {
   const [chambres, setChambres] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const navigation = useNavigation(); // Obtenez l'objet de navigation
+  const [value, setValue] = useState(false);
+  const [sensor, setSensor] = useState('');
+  const navigation = useNavigation();
+  const client = useRef(null); // Use useRef to store the MQTT client instance
+
+  function onMessage(message) {
+    if (message.destinationName === "mqtt-async-test/sensor"){
+      setSensor(JSON.parse(message.payloadString))
+    }
+  }
+
+  const toggleDevice = () => {
+    const newValue = !value; // Toggle the current value
+    setValue(newValue);// Update the local state with the new value
+    const messagePayload = `{"port" : "5", "type" : "lampe" , "value" : "${newValue}"}`;
+    const message = new Paho.Message(messagePayload);
+    message.destinationName = "mqtt-async-test/led";
+    client.current.send(message);
+  }
 
   const fetchChambres = async () => {
     try {
@@ -38,98 +62,98 @@ const Chambres = () => {
         }
       }
     } catch (error) {
-      console.error('Erreur lors de la récupération des goals depuis le back-end :', error);
       setIsLoading(false);
     }
   };
 
-  // Fonction pour filtrer les chambres autorisées
   const filterChambres = (permissions, allChambres) => {
     return allChambres.filter(chambre => {
       for (const permission of permissions) {
         if (permission.roomId === chambre._id && permission.autorisation === true) {
-          return true; // La chambre est autorisée
+          return true;
         }
       }
-      return false; // La chambre n'est pas autorisée
+      return false;
     });
   };
 
   useEffect(() => {
     fetchChambres();
-    const getNotificationPermission = async () => {
-      const { status } = await Notifications.requestPermissionsAsync();
-      if (status !== "granted") {
-        console.error("Permission pour les notifications refusée.");
-      }
+
+    // Initialize the MQTT client here
+    client.current = new Paho.Client(
+        "3527a7805748411f8bbb7517ba9191d5.s1.eu.hivemq.cloud",
+        Number(8884),
+        `mqtt-async-test-${parseInt(Math.random() * 100)}`
+    );
+
+    const connectOptions = {
+      userName: "GreenHome",
+      password: "GreenHome2023",
+      useSSL: true,
+      onSuccess: () => {
+        console.log("Connected!");
+        client.current.subscribe("mqtt-async-test/led");
+        client.current.subscribe("mqtt-async-test/sensor");
+      },
+      onFailure: () => {
+        console.log("Failed to connect!");
+      },
     };
-    getNotificationPermission();
 
-    // Configure un gestionnaire pour gérer les notifications reçues en arrière-plan
-    Notifications.setNotificationHandler({
-      handleNotification: async (notification) => {
-        const user = JSON.parse(await AsyncStorage.getItem('user'));
+    client.current.onMessageArrived = onMessage;
 
-        // Accédez aux données de la notification
-        const recipientEmail = notification.request.content.data?.recipient;
-
-        // Vérifiez si l'utilisateur a un email et primary_email identiques
-        if (recipientEmail && recipientEmail === user.primary_email) {
-          console.log("L'utilisateur a un email et primary_email sont identiques.");
-          return {
-            shouldShowAlert: true,
-            shouldPlaySound: true,
-            shouldSetBadge: false,
-          };
-          // Traitez la notification destinée à l'utilisateur ici
-        } else {
-          console.log(
-              "L'utilisateur n'a pas un email et primary_email identiques ou la notification n'est pas destinée à l'utilisateur."
-          );
-          return {
-            shouldShowAlert: true,
-            shouldPlaySound: true,
-            shouldSetBadge: false,
-          };
-        }
-      },
-    });
-  }, []);
-
-
-  const handleNotification = async () => {
-    const userEmail = "azzabihaythem97@gmail.com"; // Remplacez par le primary_email de l'utilisateur
-
-    // Génère une notification lorsque le bouton est cliqué
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Nouvelle notification",
-        body: "Ceci est le contenu de la notification.",
-        data: { recipient: userEmail }, // Utilisez le primary_email de l'utilisateur comme destinataire
-      },
-      trigger: null, // Vous pouvez spécifier un délai ou une condition pour déclencher la notification
-    });
-
-    setIsLoading(true);
-    // Attendez quelques secondes (simulant un chargement)
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  };
-
+    if (!client.current.isConnected()) {
+      client.current.connect(connectOptions);
+    }
+  }, []); // Empty dependency array to run this effect only once
   return (
       <View style={styles.container}>
         <ScreenHeader mainTitle="Control Your" secondTitle="Home" />
         <ScrollView showsVerticalScrollIndicator={false}>
           <SectionHeader title="Rooms" buttonTitle="See All" onPress={() => {}} />
-          {!isLoading ? (
-              <Button title="Envoyer une notification" onPress={handleNotification} />
+          {isLoading ? (
+              <Button title="Envoyer une notification"  />
             ) : (
               <ChambreItem navigation={navigation} list={chambres} />
-
             )}
           <SectionHeader title="Corridor" buttonTitle="" onPress={() => {}} />
-          <ChambreItem navigation={navigation} list={chambres} />
+
+          <View style={styles.corridor}>
+            <TouchableOpacity style={[styles.card, shadow.dark, { backgroundColor: value ? "#A1E2B0FF" : "white" },]} onPress={toggleDevice} >
+            <View style={styles.titleContainer}>
+              <Text style={styles.onOffText}>
+                {value ? "On" : "Off"}
+              </Text>
+            </View>
+            <View style={styles.iconContainer}>
+              <Icon name={"lightbulb-o"} size={90} color={ value ? colors.green : colors.gray}/>
+            </View>
+            <View style={styles.titleBox}>
+              <Text style={styles.title}>Lampe</Text>
+            </View>
+            <View style={styles.switchContainer}>
+              <View>
+                <Switch
+                    value={value} // Use the item's _id to access the correct state in isOn
+                    onValueChange={toggleDevice} // Use the toggleDevice function directly
+                    trackColor={{ false: colors.gray, true: colors.green }}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+          <View style={[styles.card, shadow.dark]}>
+            <Text style={styles.temperature}>
+              {Math.floor(sensor.temperature)} °C
+            </Text>
+            <View style={styles.titleBox}>
+              <Text style={styles.title}>TEMPERATURE</Text>
+              <View style={styles.iconContainerTemp}>
+                <Icon name="thermometer" size={80} color= {colors.green} />
+              </View>
+            </View>
+          </View>
+          </View>
         </ScrollView>
         <BottomTab/>
       </View>
@@ -140,6 +164,67 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.light,
+  },
+  card: {
+    width: CARD_WIDTH * 0.5,
+    height: CARD_HEIGHT,
+    marginVertical: 10,
+    borderRadius: 25,
+    margin:20,
+    padding: 15,
+    backgroundColor: colors.white,
+    flexDirection: "column", // Utilisez une disposition en ligne pour organiser les éléments horizontalement
+  },
+  temperature: {
+    fontSize: 40,
+    fontWeight :"700",
+    textAlign: "center",
+  },
+  titleContainer: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+  },
+  iconContainerTemp:{
+    alignItems: "center",
+    flex: 10,
+    marginTop : 10
+  },
+  iconContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 30, // Faites en sorte que l'icône prenne plus de place
+    marginTop : 10
+
+  },
+  titleBox: {
+    alignItems: "center",
+    justifyContent: "flex-end",
+    flex: 2, // Faites en sorte que le titre prenne plus de place
+  },
+  title: {
+    position: "absolute",
+    // bottom: 7,
+    // fontSize: 15,
+    // width:110
+    marginVertical: 70, // Marge de 70 unités verticalement
+    marginBottom: 10, // Marge de 10 unités en bas    fontSize: 18,
+    textAlign: "center",
+  },
+  onOffText: {
+    fontSize: sizes.h3,
+    color: colors.black,
+    fontWeight: "bold",
+    margin : 3
+  },
+  switchContainer: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+  },
+  corridor: {
+    flexDirection: 'row',
+    alignSelf:"center",
   },
 });
 

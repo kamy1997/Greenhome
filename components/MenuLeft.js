@@ -36,12 +36,31 @@ const MainHeader = ({onLogout}) => {
                     },
                 });
                 if (response.status === 200) {
-                    setChambres(response.data);
+                    const allChambres = response.data;
+                    let chambresAutorisees = [];
+                    if (user.email === user.primary_email) {
+                        chambresAutorisees = allChambres;
+                    } else {
+                        chambresAutorisees = filterChambres(user.permissions, allChambres);
+                    }
+                    setChambres(chambresAutorisees);
                 }
             }
         } catch (error) {
             console.error('Erreur lors de la récupération des goals depuis le back-end :', error);
         }
+    };
+
+    // Fonction pour filtrer les chambres autorisées
+    const filterChambres = (permissions, allChambres) => {
+        return allChambres.filter(chambre => {
+            for (const permission of permissions) {
+                if (permission.roomId === chambre._id && permission.autorisation === true) {
+                    return true; // La chambre est autorisée
+                }
+            }
+            return false; // La chambre n'est pas autorisée
+        });
     };
 
     useEffect(() => {
@@ -75,18 +94,6 @@ const MainHeader = ({onLogout}) => {
                 </TouchableOpacity>
             ))}
         </View>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Permissions')}>
-            <View style={styles.buttonContent}>
-                <Icon name="sign-out-alt" size={20} color="white"  />
-                <Text style={styles.buttonText}>Permissions</Text>
-            </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button2} onPress={handleLogout}>
-            <View style={styles.buttonContent}>
-                <Icon name="sign-out-alt" size={20} color="white"  />
-                <Text style={styles.buttonText}>Déconnexion</Text>
-            </View>
-        </TouchableOpacity>
     </View>
   );
 };
@@ -95,9 +102,9 @@ const styles = StyleSheet.create({
     container: {
         position: 'absolute', // Position absolue pour le menu
         left: 0, // Positionnez-le à gauche
-        top: 0, // Positionnez-le en haut
+        top: 100, // Positionnez-le en haut
         width: '60%', // Largeur du menu
-        height: '98.8%', // Hauteur du menu
+        height: '86%', // Hauteur du menu
         backgroundColor: '#eef5e1', // Couleur de fond du menu
         zIndex: 1, // Z-index pour afficher le menu au-dessus du reste du contenu
         padding: 20,
