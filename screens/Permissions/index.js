@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     },
     title:{
         fontSize: 50,
-        fontFamily:'GillSans-LightItalic',
+        fontFamily:'Palatino',
         fontWeight:'800',
         marginBottom:50,
         textAlign:'center'

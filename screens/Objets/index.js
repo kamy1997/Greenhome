@@ -8,7 +8,7 @@ import { useRoute } from '@react-navigation/native';
 import ObjetItem from "../../components/ObjetItem";
 import BottomTab from "../../components/BottomTab";
 
-const Objets = ({client}) => {
+const Objets = () => {
   const [objects, setObjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const route = useRoute();
@@ -54,7 +54,7 @@ const Objets = ({client}) => {
         {isLoading ? (
           <ActivityIndicator size="large" color={colors.primary} />
         ) : (
-            <ObjetItem list={objects} client={client} onValueChange={handleValueChange} />
+            <ObjetItem list={objects} onValueChange={handleValueChange} />
         )}
       </ScrollView>
       <BottomTab/>

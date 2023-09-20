@@ -53,7 +53,7 @@ const FAQPage = () => {
           />
         </TouchableOpacity>
 
-        <Text style={{ ...FONTS.h1,  fontFamily: 'Montserrat',fontWeight:'700', marginTop: 15, }}>FAQ</Text>
+        <Text style={{ ...FONTS.h1,  fontFamily: 'Palatino',fontWeight:'700', marginTop: 15, }}>FAQ</Text>
       </View>
       {faqData.map((faq, index) => (
         <TouchableOpacity

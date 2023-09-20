@@ -20,11 +20,10 @@ import FAQPage from "../screens/FAQPage";
 
 const Stack = createNativeStackNavigator();
 
-const Routes = ({ client ,onIsLoggedInChange }) => {
+const Routes = ({ onIsLoggedInChange }) => {
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
     const [isMenuOpen, setIsMenuOpen] = React.useState(true);
     const navigation = useNavigation(); // Obtenez la config actuelle
-    console.log(client);
     const handleMenuOpenChange = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -80,15 +79,15 @@ const Routes = ({ client ,onIsLoggedInChange }) => {
                         <>
                             <Stack.Screen
                                 name="Chambres"
-                                component={(props) => <Chambres client={client} {...props} />}
+                                component={Chambres} // Use the imported component here
                                 options={{ title: 'Chambres' }}
                             />
 
                             <Stack.Screen
                                 name="Objets"
-                                component={(props) => <Objets client={client} {...props} />}
+                                component={Objets} // Use the imported component here
                                 options={{ title: 'Objets' }}
-                            />
+                                />
 
                             <Stack.Screen name="Profil">
                                 {props => (

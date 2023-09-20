@@ -15,8 +15,10 @@ import Icon from "react-native-vector-icons/FontAwesome";
 const CARD_WIDTH = sizes.width - 80;
 const CARD_HEIGHT = 200;
 const CARD_WIDTH_SPACING = CARD_WIDTH + spacing.l;
+const helloEmoji = "👋";
 
 const Chambres = () => {
+  const [userName, setUserName] = useState();
   const [chambres, setChambres] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [value, setValue] = useState(false);
@@ -42,6 +44,7 @@ const Chambres = () => {
   const fetchChambres = async () => {
     try {
       const user = JSON.parse(await AsyncStorage.getItem('user'));
+      setUserName(user.name);
       const token = user.token;
       if (token) {
         const response = await axios.get('https://greenhomeapi.onrender.com/api/goals/', {
@@ -108,12 +111,13 @@ const Chambres = () => {
     }
   }, []); // Empty dependency array to run this effect only once
   return (
+
       <View style={styles.container}>
-        <ScreenHeader mainTitle="Control Your" secondTitle="Home" />
+        <ScreenHeader mainTitle={`Hello ${userName} ${helloEmoji}`} secondTitle="Anything I can help you with ?" />
         <ScrollView showsVerticalScrollIndicator={false}>
           <SectionHeader title="Rooms" buttonTitle="See All" onPress={() => {}} />
           {isLoading ? (
-              <Button title="Envoyer une notification"  />
+              <ActivityIndicator size="large" color={colors.green} /> // Show loading indicator
             ) : (
               <ChambreItem navigation={navigation} list={chambres} />
             )}

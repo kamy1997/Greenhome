@@ -59,7 +59,7 @@ const SECTIONS = [
     header: 'Content',
     icon: 'align-center',
     items: [
-      { icon: 'question', color: 'black', label: 'FAQ', type: 'link', page: 'FAQPage'},
+      { icon: 'feather', color: 'black', label: 'FAQ', type: 'link', page: 'FAQPage'},
     ],
   },
 ];
