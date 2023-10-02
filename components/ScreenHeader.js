@@ -24,10 +24,9 @@ const styles = StyleSheet.create({
   },
   secondTitle: {
     color: '#6D6966',
-    fontSize: '14px',
-    fontWeight: '200',
-    fontfamily: 'Montserrat',
-    fontstyle: 'normal',
+    fontSize: 14,
+    fontWeight: 200,
+    fontStyle: 'normal',
 
 
   },

@@ -8,9 +8,9 @@ const colors = {
 };
 
 const sizes = {
-  base: '14px', // Ajout de "px"
-  font: '14px', // Ajout de "px"
-  welcome: '18px', // Ajout de "px"
+  base: 14, // Ajout de "px"
+  font: 14, // Ajout de "px"
+  welcome: 18, // Ajout de "px"
   name: '21px', // Ajout de "px"
   h1: '140px', // Ajout de "px"
   button: '16px', // Ajout de "px"

@@ -20,7 +20,7 @@ const ConseilsDurable = () => {
     {
       category: "Mobilité durable",
       text: "Privilégiez les transports en commun ou le covoiturage.",
-      image: require('../../assets/sousou.jpg'),
+      image: require('../../assets/ff.jpg'),
     },
     // Ajoutez d'autres conseils avec des images ici.
   ];
@@ -61,7 +61,7 @@ const ConseilsDurable = () => {
           />
         </TouchableOpacity>
 
-        <Text style={{ ...FONTS.h1,  fontFamily: 'Palatino',fontWeight:'700', marginTop: 15,marginBottom: 30, }}>FAQ</Text>
+        <Text style={{ ...FONTS.h1,  fontFamily: 'Palatino',fontWeight:'700', marginTop: 15,marginBottom: 30, }}>ConseilsDurables</Text>
        
       </View>
       <Text style={{ fontSize: 16, fontWeight: '300', marginBottom: 16 ,textAlign:'center'}}> 🌿 Découvrez nos conseils simples pour un mode de vie plus durable. Ensemble, nous pouvons créer un avenir plus vert et préserver notre belle planète. Commencez dès aujourd'hui ! 🌎💚" </Text>

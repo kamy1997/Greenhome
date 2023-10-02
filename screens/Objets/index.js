@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, View, Text, StyleSheet, ScrollView } from 'react-native';
+import { ActivityIndicator, View, Text, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { colors } from '../../components/themes';
@@ -45,20 +45,18 @@ const Objets = () => {
 
   useEffect(() => {
     fetchObjects();
-  }, [route.params.chambreData,newState]);
+  }, [route.params.chambreData, newState]);
 
   return (
-    <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.container}>
         <SectionHeader title={chambreName.toUpperCase()} buttonTitle="See All" onPress={() => {}} />
         {isLoading ? (
-          <ActivityIndicator size="large" color={colors.primary} />
+            <ActivityIndicator size="large" color={colors.primary} />
         ) : (
             <ObjetItem list={objects} onValueChange={handleValueChange} />
         )}
-      </ScrollView>
-      <BottomTab/>
-    </View>
+        <BottomTab/>
+      </View>
   );
 };
 

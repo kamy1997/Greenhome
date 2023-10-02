@@ -85,7 +85,7 @@ const ObjetItem = (props) => {
     const newState = !isOn[_id]; // Inverser l'état actuel (allumé/éteint)
 
 
-    const messagePayload = `{"port" : "${port}", "type" : "${type}" , "value" : "${newState ? true : false}"}`;
+    const messagePayload = `{"port" : "${port}", "type" : "${type}" , "value" : ${newState ? true : false}}`;
     const message = new Paho.Message(messagePayload);
     message.destinationName = "mqtt-async-test/led";
     client.send(message);
@@ -137,8 +137,9 @@ const ObjetItem = (props) => {
 
   return (
       <FlatList
+          numColumns={2} // Définissez le nombre de colonnes sur 2
           data={list}
-          horizontal
+          key={(item) => item._id}
           snapToInterval={CARD_WIDTH_SPACING}
           decelerationRate="fast"
           showsHorizontalScrollIndicator={false}
@@ -203,7 +204,7 @@ const ObjetItem = (props) => {
                         </View>
                       </View>
                     </View>
-                    <View style={[styles.card, shadow.dark]}>
+                    <View style={[styles.card2, shadow.dark]}>
                       <Text style={styles.temperature}>
                         {Math.floor(Sensor.humidity)} %
                       </Text>
@@ -212,7 +213,6 @@ const ObjetItem = (props) => {
                         <View style={styles.iconContainerTemp}>
                           <Icon name="tint" size={80} color={colors.green} />
                         </View>
-
                       </View>
                     </View>
                   </>
@@ -229,13 +229,7 @@ const ObjetItem = (props) => {
 
             return (
                 <>
-                <TouchableOpacity
-                    key={item._id}
-                    style={{
-                      marginLeft: spacing.l,
-                      marginRight: index === list.length - 1 ? spacing.l : 0,
-                    }}
-                >
+                <TouchableOpacity key={item._id} style={styles.container}>
                 {content}
                 </TouchableOpacity>
                 </>
@@ -246,10 +240,25 @@ const ObjetItem = (props) => {
 };
 
 const styles = StyleSheet.create({
+  container:{
+    backgroundColor: colors.light,
+    marginLeft: spacing.l,
+    flexDirection: "row"
+  },
   card: {
     width: CARD_WIDTH * 0.5,
     height: CARD_HEIGHT,
     marginVertical: 10,
+    borderRadius: 25,
+    padding: 15,
+    backgroundColor: colors.white,
+    flexDirection: "column", // Utilisez une disposition en ligne pour organiser les éléments horizontalement
+  },
+  card2: {
+    width: CARD_WIDTH * 0.5,
+    height: CARD_HEIGHT,
+    marginVertical: 10,
+    marginHorizontal:25,
     borderRadius: 25,
     padding: 15,
     backgroundColor: colors.white,

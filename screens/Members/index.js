@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import {colors, sizes} from "../../components/themes";
 
-const Permissions = (props) => {
+const Members = (props) => {
     const [users, setUsers] = useState([]);
     const navigation = useNavigation();
     const isFocused = useIsFocused();
@@ -50,10 +50,9 @@ const Permissions = (props) => {
     return (
         <Background>
             <View style={styles.container}>
-                <Text style={styles.title}>Permissions</Text>
-                <Text style={styles.soustitle}>click on member to change permissions</Text>
+                <Text style={styles.title}>Members</Text>
                 {users.map((user) => (
-                    <TouchableOpacity key={user._id} style={styles.userContainer} onPress={() => handleUserPress(user)}>
+                    <TouchableOpacity key={user._id} style={styles.userContainer}>
                         <Text style={styles.userName}>{user.name}</Text>
                     </TouchableOpacity>
                 ))}
@@ -74,13 +73,6 @@ const styles = StyleSheet.create({
         fontSize: 50,
         fontFamily:'Palatino',
         fontWeight:'800',
-        marginBottom:10,
-        textAlign:'center'
-    },
-    soustitle:{
-        fontSize: 20,
-        fontFamily:'Palatino',
-        fontWeight:'800',
         marginBottom:50,
         textAlign:'center'
     },
@@ -99,4 +91,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Permissions;
+export default Members;

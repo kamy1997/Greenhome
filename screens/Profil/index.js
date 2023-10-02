@@ -25,39 +25,16 @@ const Profile = ({ navigation }) => {
 
     useEffect(() => {
         checkUserAuthentication();
-        fetchUserData();
     }, []);
 
     const checkUserAuthentication = async () => {
-        const token = await AsyncStorage.getItem("token");
+        const user = JSON.parse(await AsyncStorage.getItem('user'));
+        const token = user.token;
         if (token) {
             setUserAuthenticated(true);
-        }
-    };
-
-    const fetchUserData = async () => {
-        try {
-            const token = await AsyncStorage.getItem("token");
-            if (token) {
-                const response = await Axios.get(
-                    "https://greenhomeapi.onrender.com/api/users/me",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
-
-                if (response.status === 200) {
-                    const userData = response.data;
-                    setName(userData.name);
-
-                    setEmail(userData.email);
-                    setPassword(userData.password);
-                }
-            }
-        } catch (error) {
-            console.error("Erreur lors de la récupération des informations de l'utilisateur :", error);
+            setName(user.name);
+            setEmail(user.email);
+            setPassword(user.password);
         }
     };
 
@@ -76,15 +53,14 @@ const Profile = ({ navigation }) => {
 
     const handleSaveChanges = async () => {
         try {
-            const token = await AsyncStorage.getItem("token");
+            const user = JSON.parse(await AsyncStorage.getItem('user'));
+            console.log(user);
+            const token = user.token;
             if (token) {
                 const updatedUserInfo = {
                     name,
                     email,
                     password,
-
-                    // N'envoyez pas le mot de passe depuis le client, sauf si vous avez une logique sécurisée pour le faire
-                    // password,
                 };
 
                 const response = await Axios.put(
@@ -98,6 +74,7 @@ const Profile = ({ navigation }) => {
                 );
 
                 if (response.status === 200) {
+                    console.log(response.data)
                     alert("Informations mises à jour avec succès !");
                 } else {
                     alert("Erreur lors de la mise à jour des informations.");

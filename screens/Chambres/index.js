@@ -24,7 +24,7 @@ const Chambres = () => {
   const [value, setValue] = useState(false);
   const [sensor, setSensor] = useState('');
   const navigation = useNavigation();
-  const client = useRef(null); // Use useRef to store the MQTT client instance
+  const client = useRef(null);
 
   function onMessage(message) {
     if (message.destinationName === "mqtt-async-test/sensor"){
@@ -35,7 +35,7 @@ const Chambres = () => {
   const toggleDevice = () => {
     const newValue = !value; // Toggle the current value
     setValue(newValue);// Update the local state with the new value
-    const messagePayload = `{"port" : "5", "type" : "lampe" , "value" : "${newValue}"}`;
+    const messagePayload = `{"port" : "16", "type" : "lampe" , "value" : ${newValue}}`;
     const message = new Paho.Message(messagePayload);
     message.destinationName = "mqtt-async-test/led";
     client.current.send(message);
@@ -110,6 +110,7 @@ const Chambres = () => {
       client.current.connect(connectOptions);
     }
   }, []); // Empty dependency array to run this effect only once
+
   return (
 
       <View style={styles.container}>

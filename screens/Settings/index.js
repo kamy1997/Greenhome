@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -16,61 +16,81 @@ import MainHeader from "../../components/MenuLeft";
 import BottomTab from "../../components/BottomTab";
 
 
-const SECTIONS = [
-  {
-    header: 'Preferences',
-    icon: 'settings',
-    items: [
-      { icon: 'globe', color: '#fe9400', label: 'Language', type: 'link' },
-      {
-        icon: 'moon',
-        color: '#007afe',
-        label: 'Dark Mode',
-        value: false,
-        type: 'boolean',
-      },
-     
-      {
-        icon: 'users',
-        color: '#32c759',
-        label: 'Show Membres',
-        value: true,
-        type: 'link',
-      },
-      {
-        icon: 'airplay',
-        color: '#fd2d54',
-        label: 'Permissions',
-        type: 'link',
-        page:'Permissions'
-      },
-    ],
-  },
-  {
-    header: 'Help',
-    icon: 'help-circle',
-    items: [
-    { icon: 'help-circle', color: '#007afe', label: 'Conseils Durables', type: 'link' ,page:'ConseilsDurable' },
-      { icon: 'droplet', color: '#8e8d91', label: 'Carbon FootPrint Calculator', type: 'link' ,page:'CarbonCalculator' },
-      
-    ],
-  },
-  {
-    header: 'Content',
-    icon: 'align-center',
-    items: [
-      { icon: 'feather', color: 'black', label: 'FAQ', type: 'link', page: 'FAQPage'},
-    ],
-  },
-];
-
 const Settings = ({onLogout}) => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+  const [email, setEmail] = useState("");
+  const [primary_email, setPrimaryEmail] = useState("");
+
+  const checkUserAuthentication = async () => {
+    const user = JSON.parse(await AsyncStorage.getItem('user'));
+    const token = user.token;
+    if (token) {
+      setEmail(user.email);
+      setPrimaryEmail(user.primary_email);
+    }
+  };
+
+  useEffect(() => {
+    checkUserAuthentication();
+  }, []);
+
 
   const handleLogout = async () => {
     onLogout();
     await AsyncStorage.removeItem('user');
   };
+
+
+  const SECTIONS = [
+    {
+      header: 'Preferences',
+      icon: 'settings',
+      items: [
+        { icon: 'globe', color: '#fe9400', label: 'Language', type: 'link', page: 'Settings'},
+        {
+          icon: 'moon',
+          color: '#007afe',
+          label: 'Dark Mode',
+          value: false,
+          type: 'boolean',
+          page: 'Settings'
+        },
+
+        {
+          icon: 'users',
+          color: '#32c759',
+          label: 'Show Members',
+          value: true,
+          type: 'link',
+          page: 'Members'
+        },
+        {
+          icon: 'airplay',
+          color: '#fd2d54',
+          label: 'Permissions',
+          type: 'link',
+          page:'Permissions',
+          condition: email === primary_email,
+        },
+      ],
+    },
+    {
+      header: 'Help',
+      icon: 'help-circle',
+      items: [
+        { icon: 'help-circle', color: '#007afe', label: 'Conseils Durables', type: 'link' ,page:'ConseilsDurable' },
+        { icon: 'droplet', color: '#8e8d91', label: 'Carbon FootPrint Calculator', type: 'link' ,page:'CarbonCalculator' },
+
+      ],
+    },
+    {
+      header: 'Content',
+      icon: 'align-center',
+      items: [
+        { icon: 'feather', color: 'black', label: 'FAQ', type: 'link', page: 'FAQPage'},
+      ],
+    },
+  ];
     
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -79,7 +99,10 @@ const Settings = ({onLogout}) => {
         {SECTIONS.map(({ header, items }) => (
           <View style={styles.section} key={header}>
             <Text style={styles.sectionHeader}>{header}</Text>
-            {items.map(({ label, icon, type, value, color, page}, index) => {
+            {items.map(({ label, icon, type, value, color, page,condition}, index) => {
+              if (condition !== undefined && !condition) {
+                return null; // Ne rend pas cet élément si la condition n'est pas remplie
+              }
               return (
                 <TouchableOpacity
                   key={label}
@@ -89,13 +112,9 @@ const Settings = ({onLogout}) => {
                     <View style={[styles.rowIcon, { backgroundColor: color }]}>
                       <FeatherIcon color="#fff" name={icon} size={18} />
                     </View>
-
                     <Text style={styles.rowLabel}>{label}</Text>
-
                     <View style={styles.rowSpacer} />
-
                     {type === 'boolean' && <Switch value={value} />}
-
                     {type === 'link' && (
                       <FeatherIcon
                         color="#0c0c0c"
@@ -136,7 +155,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     marginTop:95,
     alignItems: "center", // Ajoutez cette ligne pour centrer horizontalement
-  },
+    },
   sectionHeader: {
     paddingVertical: 12,
     fontSize: 12,

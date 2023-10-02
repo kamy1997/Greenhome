@@ -1,12 +1,14 @@
-import React, { useState, useEffect,Modal  } from 'react';
+ import React, { useState, useEffect,Modal  } from 'react';
 import { View, Text, Alert, StyleSheet, ScrollView, TouchableOpacity, Animated } from 'react-native';
 import { Button } from 'react-native-elements';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
-
+import { COLORS, FONTS, darkGreen } from "../../components/Constants";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 const SEUIL = 5;
 
 const CarbonCalculator = () => {
- 
+  const navigation = useNavigation();
   const [questions, setQuestions] = useState([
     {
       id: 1,
@@ -65,25 +67,30 @@ const CarbonCalculator = () => {
       options: ["Oui", "Non"],
     },
   ]);
-  
+
 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [empreinteCarboneText, setEmpreinteCarboneText] = useState('');
   const [animatedValues, setAnimatedValues] = useState(
-    questions.map(() => new Animated.Value(0))
+      questions.map(() => new Animated.Value(0))
   );
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showAlertResult, setShowAlertResult] = useState(false);
+  const [answeredQuestionsCount, setAnsweredQuestionsCount] = useState(0);
+
 
   const handleAnswer = (questionId, optionIndex) => {
     const updatedSelectedOptions = [...selectedOptions];
     updatedSelectedOptions[questionId - 1] = optionIndex;
     setSelectedOptions(updatedSelectedOptions);
 
+    setAnsweredQuestionsCount(answeredQuestionsCount + 1);
+
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     }
   };
+
 
   const calculateTotalEmissions = () => {
     const totalEmissions = selectedOptions.reduce((total, optionIndex, index) => {
@@ -94,14 +101,14 @@ const CarbonCalculator = () => {
       }
       return total;
     }, 0);
-  
+
     setTotalEmissions(totalEmissions);
     setEmpreinteCarboneText(`Votre empreinte carbone est : ${totalEmissions} kg CO2`);
     setShowAlertResult(true);
     Alert.alert(
-      'Votre Empreinte Carbone \n🌿🌎',
-      `\n Félicitations ! Votre empreinte carbone est de ${totalEmissions} kg CO2, \n\n Ce qui est un excellent début pour contribuer à un environnement plus propre et plus vert. Continuez à faire des choix écologiques pour réduire davantage votre empreinte carbone !`,
-      [{ text: 'OK' }]
+        'Votre Empreinte Carbone \n🌿🌎',
+        `\n Félicitations ! Votre empreinte carbone est de ${totalEmissions} kg CO2, \n\n Ce qui est un excellent début pour contribuer à un environnement plus propre et plus vert. Continuez à faire des choix écologiques pour réduire davantage votre empreinte carbone !`,
+        [{ text: 'OK' }]
     );
   };
 
@@ -111,22 +118,22 @@ const CarbonCalculator = () => {
     if (answeredQuestions >= 7) {
       if (totalEmissions > SEUIL) {
         Alert.alert(
-          'Alerte',
-          'Vous êtes au-dessus du seuil d\'empreinte carbone. Veuillez prendre des mesures pour réduire votre impact environnemental.',
-          [{ text: 'OK' }]
+            'Alerte',
+            'Vous êtes au-dessus du seuil d\'empreinte carbone. Veuillez prendre des mesures pour réduire votre impact environnemental.',
+            [{ text: 'OK' }]
         );
       } else {
         Alert.alert(
-          'Félicitations',
-          'Vous êtes en dessous du seuil d\'empreinte carbone. Continuez vos efforts pour rester écologique !',
-          [{ text: 'OK' }]
+            'Félicitations',
+            'Vous êtes en dessous du seuil d\'empreinte carbone. Continuez vos efforts pour rester écologique !',
+            [{ text: 'OK' }]
         );
       }
     } else {
       Alert.alert(
-        'Attention',
-        `Vous devez répondre à au moins 7 questions pour obtenir un résultat. Vous en avez répondu à ${answeredQuestions} jusqu'à présent.`,
-        [{ text: 'OK' }]
+          'Attention',
+          `Vous devez répondre à au moins 7 questions pour obtenir un résultat. Vous en avez répondu à ${answeredQuestions} jusqu'à présent.`,
+          [{ text: 'OK' }]
       );
     }
   };
@@ -147,75 +154,114 @@ const CarbonCalculator = () => {
 
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Calculez votre empreinte carbone</Text>
-      {questions.map((q, index) => (
-        <Animated.View
-          key={q.id}
-          style={[
-            styles.questionContainer,
-            {
-              opacity: animatedValues[index].interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-              }),
-              transform: [
-                {
-                  translateY: animatedValues[index].interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [-50, 0],
-                  }),
-                },
-              ],
-            },
-          ]}
+      <ScrollView contentContainerStyle={styles.container}>
+        <View
+            style={{
+              marginHorizontal: 12,
+
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
         >
-          <Text style={styles.questionText}>{q.question}</Text>
-          <View>
-            {q.options.map((option, optionIndex) => (
-              <TouchableOpacity
-                key={optionIndex}
-                style={styles.option}
-                onPress={() => handleAnswer(q.id, optionIndex + 1)}
-              >
-                <RadioButton labelHorizontal={true}>
-                  <RadioButtonInput
-                    obj={{ label: option, value: optionIndex + 1 }}
-                    index={optionIndex}
-                    isSelected={selectedOptions[index] === optionIndex + 1}
-                    onPress={() => handleAnswer(q.id, optionIndex + 1)}
-                    borderWidth={1}
-                    buttonInnerColor={'#A1E2B0FF'}
-                    buttonOuterColor={'black'}
-                    buttonSize={16}
-                    buttonOuterSize={24}
-                  />
-                  <RadioButtonLabel
-                    obj={{ label: option, value: optionIndex + 1 }}
-                    index={optionIndex}
-                    onPress={() => handleAnswer(q.id, optionIndex + 1)}
-                    labelStyle={styles.radioText}
-                  />
-                </RadioButton>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </Animated.View>
-      ))}
-      <Button
-        title="Calculer l'empreinte carbone"
-        onPress={calculateTotalEmissions}
-        buttonStyle={styles.button}
-      />
-      <Button
-        title="Vérifier l'empreinte carbone"
-        onPress={showAlert}
-        buttonStyle={styles.button}
-      />
-       
-   
-       {/* Modal pour afficher l'empreinte carbone */}
-       {/* <Modal visible={showModal} transparent={true} animationType="slide">
+          <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{
+                position: "absolute",
+                left: 0,
+              }}
+          >
+            <MaterialIcons
+                name="keyboard-arrow-left"
+                size={28}
+                color={COLORS.black}
+                style={{
+                  marginTop:20,
+
+                }}
+
+
+            />
+          </TouchableOpacity>
+
+          <Text style={{ ...FONTS.h1,fontWeight:'700', marginTop: 15,marginBottom: 30, }}>CarbonCalculator</Text>
+
+        </View>
+        <Text style={styles.header}>Calculez votre empreinte carbone</Text>
+        {questions.map((q, index) => (
+            <Animated.View
+
+                key={q.id}
+                style={[
+                  styles.questionContainer,
+                  {
+                    opacity: animatedValues[index].interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 1],
+                    }),
+                    transform: [
+                      {
+                        translateY: animatedValues[index].interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [-50, 0],
+                        }),
+                      },
+                    ],
+                  },
+                ]}
+            >
+              <Text style={styles.questionText}>{q.question}</Text>
+              <View>
+
+                {q.options.map((option, optionIndex) => (
+                    <TouchableOpacity
+                        key={optionIndex}
+                        style={styles.option}
+                        onPress={() => handleAnswer(q.id, optionIndex + 1)}
+                    >
+                      <RadioButton labelHorizontal={true}>
+                        <RadioButtonInput
+                            obj={{ label: option, value: optionIndex + 1 }}
+                            index={optionIndex}
+                            isSelected={selectedOptions[index] === optionIndex + 1}
+                            onPress={() => handleAnswer(q.id, optionIndex + 1)}
+                            borderWidth={1}
+                            buttonInnerColor={'#A1E2B0FF'}
+                            buttonOuterColor={'black'}
+                            buttonSize={16}
+                            buttonOuterSize={24}
+                        />
+                        <RadioButtonLabel
+                            obj={{ label: option, value: optionIndex + 1 }}
+                            index={optionIndex}
+                            onPress={() => handleAnswer(q.id, optionIndex + 1)}
+                            labelStyle={styles.radioText}
+                        />
+                      </RadioButton>
+                    </TouchableOpacity>
+                ))}
+              </View>
+            </Animated.View>
+        ))}
+        {answeredQuestionsCount >= 7 && (
+            <>
+              <Button
+                  title="Calculer l'empreinte carbone"
+                  onPress={calculateTotalEmissions}
+                  buttonStyle={styles.button}
+              />
+              <Button
+                  title="Vérifier l'empreinte carbone"
+                  onPress={showAlert}
+                  buttonStyle={styles.button}
+              />
+            </>
+        )}
+
+
+
+
+        {/* Modal pour afficher l'empreinte carbone */}
+        {/* <Modal visible={showModal} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>{empreinteCarboneText}</Text>
@@ -223,7 +269,7 @@ const CarbonCalculator = () => {
           </View>
         </View>
       </Modal> */}
-    </ScrollView>
+      </ScrollView>
   );
 };
 
@@ -257,28 +303,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 8,
-   
+
   },
   radioButton: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
-    
-    
+
+
   },
   radioText: {
     marginRight: 20,
     marginLeft: 10,
     fontSize: 16,
-    
+
   },
   button: {
     backgroundColor: '#A1E2B0FF',
     borderRadius: 5,
     marginTop: 20,
-    
+
   },
- 
+
 });
 
 export default CarbonCalculator;

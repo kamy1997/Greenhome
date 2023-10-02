@@ -17,6 +17,7 @@ import Settings from  "../screens/Settings";
 import ConseilsDurable from "../screens/ConseilsDurable";
 import CarbonCalculator from "../screens/CarbonCalculator";
 import FAQPage from "../screens/FAQPage";
+import Members from "../screens/Members";
 
 const Stack = createNativeStackNavigator();
 
@@ -100,6 +101,13 @@ const Routes = ({ onIsLoggedInChange }) => {
                                 {props => (
                                     <React.Fragment>
                                         <ManagePermissions {...props} />
+                                    </React.Fragment>
+                                )}
+                            </Stack.Screen>
+                            <Stack.Screen name="Members">
+                                {props => (
+                                    <React.Fragment>
+                                        <Members {...props} />
                                     </React.Fragment>
                                 )}
                             </Stack.Screen>

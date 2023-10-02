@@ -45,7 +45,7 @@ const ManagePermissions = ({ route }) => {
     return (
         <View style={styles.container}>
             <ScrollView>
-            <Text style={styles.title}>Gestion des autorisations pour {user.name}</Text>
+            <Text style={styles.title}>Permission management for {user.name}</Text>
             {permissions.map((permission) => (
                 <View key={permission.roomId} style={styles.permissionRow}>
                     <Text style={styles.name}>{permission.roomName}</Text>

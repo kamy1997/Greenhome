@@ -8,7 +8,6 @@ import {
   Image,
 } from 'react-native';
 import {colors, shadow, sizes, spacing} from './themes';
-import FavoriteButton from './FavoriteButton';
 const CARD_WIDTH = sizes.width - 80;
 const CARD_HEIGHT = 200;
 const CARD_WIDTH_SPACING = CARD_WIDTH + spacing.l;
